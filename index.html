@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="SatelliteVox is a responsive frontend project for exploring planets and other celestial bodies from our solar system."
+    />
+    <title>SatelliteVox</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Source+Sans+3:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <p class="eyebrow">Milestone 1 Setup</p>
+        <h1>SatelliteVox</h1>
+        <p class="hero-copy">
+          Explore planets, moons, asteroids, and other celestial bodies from the
+          solar system through a clean, responsive interface powered by live API data.
+        </p>
+      </header>
+
+      <main>
+        <section class="controls" aria-label="Search, filter, and sort controls">
+          <div class="control-group">
+            <label for="search">Search</label>
+            <input
+              id="search"
+              type="search"
+              placeholder="Search celestial bodies"
+              disabled
+            />
+          </div>
+
+          <div class="control-row">
+            <div class="control-group">
+              <label for="filter">Filter by type</label>
+              <select id="filter" disabled>
+                <option>All bodies</option>
+                <option>Planet</option>
+                <option>Moon</option>
+                <option>Asteroid</option>
+                <option>Dwarf planet</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="sort">Sort by</label>
+              <select id="sort" disabled>
+                <option>Name</option>
+                <option>Gravity</option>
+                <option>Density</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <section class="results" aria-labelledby="results-heading">
+          <div class="section-heading">
+            <h2 id="results-heading">Planned Results Grid</h2>
+            <button class="theme-toggle" type="button" disabled>Theme Toggle</button>
+          </div>
+
+          <div class="card-grid">
+            <article class="body-card">
+              <p class="card-type">Planet</p>
+              <h3>Earth</h3>
+              <ul>
+                <li>Gravity: 9.8 m/s²</li>
+                <li>Density: 5.51 g/cm³</li>
+                <li>Temperature: 288 K</li>
+                <li>Moons: 1</li>
+              </ul>
+              <div class="card-actions">
+                <button type="button" disabled>View Details</button>
+                <button type="button" disabled>Favorite</button>
+              </div>
+            </article>
+
+            <article class="body-card body-card--placeholder">
+              <p class="card-type">Moon</p>
+              <h3>Europa</h3>
+              <ul>
+                <li>Gravity: Planned dynamic field</li>
+                <li>Density: Planned dynamic field</li>
+                <li>Temperature: Planned dynamic field</li>
+                <li>Moons: Planned dynamic field</li>
+              </ul>
+              <div class="card-actions">
+                <button type="button" disabled>View Details</button>
+                <button type="button" disabled>Favorite</button>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
