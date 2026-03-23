@@ -1,24 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- 
-    SATELLITE_VOX | THE ORBITAL ARCHIVE
-    Designed for scale, not for comfort.
-    Aesthetic: NEO-BRUTALIST (V_1.02)
--->
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>SATELLITE_VOX | ORBITAL_ARCHIVE</title>
     
-    <!-- TailWind CDN as provided by the user -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     
-    <!-- Brutalist Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="styles.css">
     
     <script id="tailwind-config">
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
@@ -38,177 +33,66 @@
             },
         }
     </script>
-    <style type="text/tailwindcss">
-        @layer base {
-            body {
-                @apply bg-concrete-light text-structural-black font-mono uppercase tracking-tight transition-all duration-300;
-                background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
-            }
-        }
-        .block-shadow {
-            box-shadow: 12px 12px 0px 0px theme('colors.structural-black');
-        }
-        .block-shadow-sm {
-            box-shadow: 6px 6px 0px 0px theme('colors.structural-black');
-        }
-        .concrete-texture {
-            background-color: #e5e5e5;
-            background-image: radial-gradient(#d1d1d1 1px, transparent 0);
-            background-size: 24px 24px;
-        }
-        .structural-grid {
-            background-size: 60px 60px;
-            background-image: linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
-        }
-        .heavy-border {
-            border: 6px solid #000000;
-        }
-        
-        /* Dark Mode Overrides */
-        body.dark {
-            @apply bg-structural-black text-concrete-light;
-        }
-        body.dark .bg-white { @apply bg-concrete-dark text-black; }
-        body.dark .bg-concrete-light { @apply bg-stone-900; }
-        body.dark .block-shadow { box-shadow: 12px 12px 0px 0px theme('colors.concrete-mid'); }
-        body.dark .block-shadow-sm { box-shadow: 6px 6px 0px 0px theme('colors.concrete-mid'); }
-        body.dark .border-structural-black { @apply border-concrete-light; }
-        body.dark .heavy-border { border-color: #F2F2F2; }
-    </style>
 </head>
-<body class="min-h-screen structural-grid selection:bg-warning-yellow selection:text-black" id="prism-body">
-    <header class="border-b-[10px] border-structural-black bg-white p-8 sticky top-0 z-50 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-        <div class="flex items-center gap-6">
-            <h1 class="font-brutalist text-5xl md:text-8xl tracking-tighter leading-none" id="main-title">SATELLITE_VOX</h1>
-            <div class="border-4 border-structural-black p-2 bg-warning-yellow flex items-center gap-2">
-                <span class="material-symbols-outlined text-sm font-bold">sensors</span>
-                <span class="text-xs font-bold">ORBIT_2.04</span>
-            </div>
+<body class="min-h-screen structural-grid selection:bg-warning-yellow selection:text-black dark:bg-stone-950 transition-colors duration-300" id="prism-body">
+    <header class="border-b-4 border-black dark:border-white bg-white dark:bg-stone-900 p-6 sticky top-0 z-50 flex justify-between items-center gap-6">
+        <div class="flex items-center gap-4">
+            <h1 class="font-brutalist text-2xl tracking-tighter dark:text-white uppercase">SATELLITE_VOX</h1>
+            <span class="hidden md:block bg-warning-yellow border-2 border-black px-2 py-0.5 text-[10px] font-bold text-black uppercase tracking-widest">UPLINK_STABLE</span>
         </div>
-        <nav class="flex flex-wrap gap-4 font-bold">
-            <button id="theme-toggle" class="border-4 border-structural-black px-6 py-2 hover:bg-structural-black hover:text-white transition-all uppercase">
-                TOGGLE_SIGNAL
+        <nav class="flex gap-3">
+            <button id="refresh-btn" class="border-2 border-black dark:border-white px-4 py-2 bg-warning-red text-white text-[10px] font-bold uppercase flex items-center gap-2 hover:bg-black dark:hover:bg-white dark:hover:text-black transition-all active:scale-95">
+                <span class="material-symbols-outlined text-sm">sync</span> PULL
             </button>
-            <button class="border-4 border-structural-black px-6 py-2 bg-structural-black text-white hover:bg-warning-red transition-all">EXIT_UPLINK</button>
+            <button id="theme-toggle" class="border-2 border-black dark:border-white px-4 py-2 bg-white dark:bg-stone-800 text-black dark:text-white text-[10px] font-bold uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all active:scale-95">
+                THEME
+            </button>
         </nav>
     </header>
 
-    <div class="flex flex-col lg:flex-row">
-        <!-- Sidebar Navigation -->
-        <aside class="w-full lg:w-96 border-b-[10px] lg:border-b-0 lg:border-r-[10px] border-structural-black p-10 space-y-12 bg-concrete-mid/30">
-            <div class="space-y-6">
-                <p class="text-sm font-bold bg-structural-black text-white inline-block px-2 py-1">NAVIGATION_TREE</p>
-                <nav class="space-y-4">
-                    <button class="w-full text-left block p-5 border-4 border-structural-black bg-white block-shadow-sm hover:translate-x-1 hover:-translate-y-1 transition-transform flex items-center justify-between group">
-                        <span class="font-bold">ACTIVE_TLE</span>
-                        <span class="material-symbols-outlined">satellite_alt</span>
-                    </button>
-                    <button class="w-full text-left block p-5 border-4 border-structural-black bg-white block-shadow-sm hover:translate-x-1 hover:-translate-y-1 transition-transform flex items-center justify-between group">
-                        <span class="font-bold">TRAFFIC_RAW</span>
-                        <span class="material-symbols-outlined">analytics</span>
-                    </button>
-                </nav>
+    <div class="max-w-6xl mx-auto w-full px-6 py-12 space-y-12">
+        <section class="bg-white dark:bg-stone-900 border-[6px] border-black dark:border-white p-8 block-shadow dark:shadow-[12px_12px_0px_0px_#f2f2f2]">
+            <div class="flex items-center gap-3 mb-6 border-b-2 border-black dark:border-white pb-4">
+                <span class="bg-warning-yellow border-2 border-black px-2 py-0.5 font-bold text-[10px] text-black">UPLINK_01</span>
+                <h3 class="font-brutalist text-xl dark:text-white uppercase">Controller</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                <div class="md:col-span-12 space-y-2">
+                    <label class="text-[10px] font-bold dark:text-gray-400 uppercase tracking-widest">Target_Query</label>
+                    <div class="flex flex-col md:flex-row gap-3">
+                        <input id="vault-search" class="w-full bg-concrete-light dark:bg-stone-950 border-4 border-black dark:border-white p-4 focus:ring-0 focus:bg-white dark:focus:bg-stone-800 text-lg font-mono uppercase dark:text-white placeholder:text-gray-500" placeholder="NAME / NORAD_ID" type="text"/>
+                        <select id="sort-select" class="bg-white dark:bg-stone-950 border-4 border-black dark:border-white p-4 font-bold text-sm dark:text-white uppercase">
+                            <option value="name">NAME</option>
+                            <option value="id">SID</option>
+                            <option value="popularity">POP</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="space-y-6">
+            <div class="flex justify-between items-end border-b-4 border-black dark:border-white pb-4">
+                <h4 class="font-brutalist text-2xl dark:text-white uppercase">Telemetry_Logs</h4>
+                <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Live_Archive</p>
             </div>
             
-            <div class="p-6 border-4 border-structural-black bg-warning-yellow block-shadow-sm">
-                <h3 class="font-brutalist text-xl mb-2">SYSTEM_HEALTH</h3>
-                <div class="h-4 bg-structural-black/10 border-2 border-structural-black overflow-hidden mb-4">
-                    <div class="h-full bg-structural-black w-[94%]"></div>
+            <div id="link-vault-grid" class="grid grid-cols-1 gap-4">
+                <div class="bg-white dark:bg-stone-900 border-2 border-black dark:border-white p-6 block-shadow-sm flex items-center justify-between animate-pulse">
+                    <p class="font-brutalist text-sm dark:text-white tracking-widest">BOOTING...</p>
                 </div>
-                <p class="text-xs font-bold font-mono">94% EFFICIENCY_UPLINK</p>
             </div>
-
-            <button id="refresh-btn" class="w-full bg-warning-red text-white border-4 border-structural-black font-brutalist p-8 text-2xl block-shadow hover:shadow-none hover:translate-x-2 hover:translate-y-2 transition-all">
-                PULL_NEW_DATA
-            </button>
-        </aside>
-
-        <!-- Main Content Area -->
-        <main class="flex-1 p-8 md:p-16 space-y-20">
-            <section class="max-w-5xl space-y-8">
-                <div class="inline-block bg-structural-black text-white px-4 py-2 text-sm font-bold mb-4">
-                    LOCATION: /ORBITAL/ARCHIVE_01
-                </div>
-                <h2 class="font-brutalist text-7xl md:text-9xl leading-[0.8] tracking-tighter">
-                    DECONSTRUCTED<br/>TLE_INTERFACE.
-                </h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    <p class="text-xl font-bold leading-tight">
-                        NO DECORATION. ONLY FUNCTION. SATELLITE_VOX SHREDS ORBITAL DATA INTO MINIMAL JSON STREAMS.
-                    </p>
-                    <div class="border-l-8 border-warning-red pl-6 py-2">
-                        <p class="text-sm uppercase text-gray-500">
-                            Satellite situational awareness prioritized over comfort. Primary telemetry is hot.
-                        </p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Search Controller -->
-            <section class="relative">
-                <div class="bg-white border-[6px] border-structural-black p-10 block-shadow">
-                    <div class="flex items-center gap-4 mb-10 border-b-4 border-structural-black pb-6">
-                        <span class="bg-warning-yellow border-2 border-structural-black px-4 py-1 font-bold text-sm">SEARCH_01</span>
-                        <h3 class="font-brutalist text-4xl">UPLINK_CONTROLLER</h3>
-                    </div>
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                        <div class="lg:col-span-12 space-y-4">
-                            <label class="text-sm font-bold flex items-center gap-2">
-                                <span class="w-2 h-2 bg-warning-red rounded-full"></span> 
-                                SATELLITE_NAME_OR_NORAD_ID
-                            </label>
-                            <div class="flex flex-col md:flex-row gap-4">
-                                <input id="vault-search" class="w-full bg-concrete-light border-4 border-structural-black p-5 focus:ring-0 focus:bg-white text-xl font-mono uppercase" placeholder="SEARCH ARCHIVE (e.g., ISS, STARLINK...)" type="text"/>
-                                <select id="sort-select" class="bg-white border-4 border-structural-black p-5 font-bold">
-                                    <option value="name">SORT: NAME</option>
-                                    <option value="id">SORT: SID</option>
-                                    <option value="popularity">SORT: POPULARITY</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Active Logs Section -->
-            <section class="space-y-10">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b-[8px] border-structural-black pb-8">
-                    <div>
-                        <h4 class="font-brutalist text-5xl">ACTIVE_LOGS</h4>
-                        <p class="text-sm font-bold text-gray-500">REAL-TIME ORBITAL RECORDS</p>
-                    </div>
-                    <div class="flex gap-4">
-                        <button class="px-8 py-3 border-4 border-structural-black font-bold hover:bg-structural-black hover:text-white transition-all">FILTER.ASC</button>
-                    </div>
-                </div>
-                
-                <!-- This grid is dynamically populated by app.js -->
-                <div id="link-vault-grid" class="grid gap-10">
-                    <div class="bg-white border-4 border-structural-black p-10 block-shadow-sm">
-                        <p class="font-brutalist text-2xl animate-pulse">BOOTING_TERMINAL_UPLINK...</p>
-                    </div>
-                </div>
-            </section>
-        </main>
+        </section>
     </div>
 
-    <footer class="bg-white border-t-[10px] border-structural-black p-16">
-        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-start gap-16">
-            <div class="space-y-8 max-w-xl">
-                <h6 class="font-brutalist text-6xl leading-none tracking-tighter">SATELLITE_VOX<br/>ARCHITECTURE</h6>
-                <div class="bg-warning-yellow p-4 border-4 border-structural-black font-bold text-sm">
-                    WARNING: UNAUTHORIZED DATA EXTRACTION WILL TRIGGER SYSTEM PURGE. ALL ORBITAL TRACKS SECURED.
-                </div>
-                <p class="text-xs font-bold text-gray-500">
-                    © 2026 SATELLITE_VOX NEO-BRUTALIST ARCHIVE. BUILT FOR SCALE.
-                </p>
-            </div>
+    <footer class="bg-white dark:bg-stone-900 border-t-4 border-black dark:border-white p-8 mt-20">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <h6 class="font-brutalist text-xl dark:text-white">SATELLITE_VOX</h6>
+            <p class="text-[9px] font-bold text-gray-500 uppercase tracking-[0.2em]">© 2026 ORBITAL ARCHIVE. NO COMPROMISE.</p>
         </div>
     </footer>
 
-    <div id="notification-area" class="fixed bottom-10 right-10 z-[100] flex flex-col gap-4"></div>
-
+    <div id="notification-area" class="fixed bottom-6 right-6 z-[100] flex flex-col gap-2"></div>
     <script src="app.js"></script>
 </body>
 </html>

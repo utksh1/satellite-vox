@@ -1,57 +1,58 @@
-/* 
- * styles.css - SATELLITE_VOX | THE STRUCTURAL ABYSS 
- * 
- * DESIGN NOTES:
- * Decoration is an insult to function.
- * Heavy borders (6px+) and block shadows (12px) define the hierarchy.
- * The concrete texture is non-negotiable for that raw, archival feel.
- */
-
-:root {
-    --concrete-light: #F2F2F2;
-    --concrete-mid: #D9D9D9;
-    --concrete-dark: #BDBDBD;
-    --structural-black: #000000;
-    --warning-red: #E63946;
-    --warning-yellow: #FFD60A;
+@layer base {
+    body {
+        @apply bg-concrete-light dark:bg-stone-950 text-structural-black dark:text-concrete-light font-mono uppercase tracking-tight transition-all duration-300;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+    }
 }
 
-/* 
- * NOTIFICATION TOASTS 
- * Even in a brutalist world, we need to know what's happening.
- */
+.block-shadow {
+    box-shadow: 12px 12px 0px 0px #000;
+}
+
+.dark .block-shadow {
+    box-shadow: 12px 12px 0px 0px #F2F2F2;
+}
+
+.block-shadow-sm {
+    box-shadow: 6px 6px 0px 0px #000;
+}
+
+.dark .block-shadow-sm {
+    box-shadow: 6px 6px 0px 0px #F2F2F2;
+}
+
+.structural-grid {
+    background-size: 60px 60px;
+    background-image: linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+}
+
+.dark .structural-grid {
+    background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+}
+
 .toast {
-    @apply border-4 border-black p-6 bg-white block-shadow-sm font-bold text-sm uppercase translate-y-0 opacity-100 transition-all duration-300 pointer-events-none;
+    @apply border-2 border-black dark:border-white p-4 bg-white dark:bg-stone-800 font-bold text-[10px] uppercase translate-y-0 opacity-100 transition-all duration-300 pointer-events-none;
     z-index: 1000;
 }
 
 .toast.success {
-    @apply bg-warning-yellow border-black;
+    @apply bg-warning-yellow border-black text-black;
 }
 
 .toast.error {
     @apply bg-warning-red text-white border-black;
 }
 
-/* 
- * MOCK SKELETON ANIMATIONS 
- * The terminal needs to feel alive, even when the void is slow.
- */
-.skeleton-card {
-    @apply bg-white border-4 border-black p-12 block-shadow-sm flex items-center justify-between animate-pulse;
-}
-
-/* 
- * REVEAL ANIMATIONS 
- */
 .animate-reveal {
-    animation: reveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: reveal 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes reveal {
     0% {
         opacity: 0;
-        transform: translateY(30px) scale(0.97);
+        transform: translateY(20px) scale(0.98);
     }
     100% {
         opacity: 1;
@@ -59,35 +60,15 @@
     }
 }
 
-/* 
- * THE DARK VOID 
- */
-body.dark {
-    @apply bg-zinc-950 text-white selection:bg-warning-red selection:text-white;
-}
-
-body.dark .bg-white { @apply bg-zinc-900 text-white; }
-body.dark .bg-concrete-mid\/30 { @apply bg-zinc-900\/50; }
-body.dark .border-black { @apply border-white; }
-body.dark .block-shadow { box-shadow: 12px 12px 0px 0px #F2F2F2; }
-body.dark .block-shadow-sm { box-shadow: 6px 6px 0px 0px #F2F2F2; }
-body.dark .satellite-card { @apply bg-zinc-900 border-white; }
-body.dark .satellite-card:hover { box-shadow: 12px 12px 0px 0px #F2F2F2; }
-body.dark .toast { @apply bg-zinc-800 text-white border-white; }
-body.dark .toast.success { @apply bg-warning-yellow text-black; }
-body.dark .toast.error { @apply bg-warning-red text-white; }
-
-/* 
- * SATELLITE CARD SPECIFICS 
- * Manifested via JS, but styled here.
- */
 .satellite-card {
-    @apply bg-white border-4 border-black p-0 flex flex-col md:flex-row block-shadow-sm overflow-hidden group transition-all duration-300;
+    @apply bg-white dark:bg-stone-800 border-2 border-black dark:border-white flex items-center block-shadow-sm dark:shadow-none overflow-hidden group transition-all duration-300;
 }
 
 .satellite-card:hover {
-    @apply -translate-x-1 -translate-y-1;
-    box-shadow: 12px 12px 0px 0px #000;
+    @apply -translate-x-0.5 -translate-y-0.5 shadow-none;
+    box-shadow: 6px 6px 0px 0px #000;
 }
 
-/* Built for scale. Crafted for SATELLITE_VOX. */
+.dark .satellite-card:hover {
+    box-shadow: 6px 6px 0px 0px #F2F2F2;
+}

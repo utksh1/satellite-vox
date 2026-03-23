@@ -1,56 +1,91 @@
-# SATELLITE_VOX: THE ORBITAL ARCHIVE 🛰️
+# SATELLITE_VOX
 
-**SATELLITE_VOX** is a high-fidelity Neo-Brutalist interface designed to query and analyze the digital debris and functional machines orbiting Earth. Built as a Capstone Project to demonstrate technical mastery in JavaScript, API integration, and high-contrast UI architecture.
+SATELLITE_VOX is a browser-based satellite archive built for my capstone project. It pulls live orbital data from the TLE API and presents it through a bold neo-brutalist interface that feels more like a control terminal than a polished dashboard.
 
----
+The goal of the project was simple: make satellite data feel interesting, readable, and interactive without relying on a heavy framework. Instead of hiding the rawness of the data, the design leans into it.
 
-## 🚀 Vision & Purpose
-SATELLITE_VOX provides a raw, unfiltered terminal for space situational awareness. It prioritizes **function over form**, utilizing the "RAW INPUT" Neo-Brutalist aesthetic: NO DECORATION, ONLY DATA.
+## What It Does
 
-### 🛠️ Core Technologies
-- **API Conduit:** [TLE API (v2.0.0)](https://tle.ivanstanojevic.me) - Sourcing daily data from CelesTrak.
-- **UI Architecture:** Neo-Brutalism (Heavy 6px+ borders, Structural Black, Concrete Mids).
-- **Styling:** Custom CSS + Tailwind CSS (via CDN) for structural logic.
-- **Engine:** Vanilla JavaScript (ES6+).
+- Searches live satellite records by name or NORAD-related terms
+- Sorts results by name, satellite ID, or popularity
+- Lets users refresh the dataset on demand
+- Supports light and dark theme switching
+- Copies TLE line data to the clipboard for quick reuse
+- Stores the selected theme in local storage
 
----
+## Built With
 
-## 💎 Features (The Roadmap)
+- HTML5
+- CSS3
+- Vanilla JavaScript
+- Tailwind CSS via CDN
+- Google Fonts
+- [TLE API](https://tle.ivanstanojevic.me/api/tle)
 
-### ✅ Milestone 1: Project Setup (Completed Mar 23rd)
-- **Concept Pivot:** Transitioned from URL Shortener to Satellite Tracking.
-- **Structural Init:** Repository established with Neo-Brutalist baseline.
-- **README Documentation:** Defined purpose, tech stack, and roadmap.
+## Why I Built It
 
-### 🌀 Milestone 2: Orbital Uplink (Completed)
-- **Direct Collection Query:** Integration with `GET /api/tle` for searchable collections.
-- **Dynamic Satellite Logs:** Real-time rendering of TLE records with "Copy TLE" feedback.
-- **Loading States:** Brutalist skeleton indicators during API fetch operations.
-- **Responsive Terminal:** Fully functional across Mobile (iPhone X), Tablet, and Desktop viewports.
+This project started in a different direction and changed once I realized I wanted to build something that felt more alive. Satellite tracking gave me a better challenge: live data, search behavior, UI state, and a visual identity strong enough to make a simple frontend feel memorable.
 
-### ⚙️ Milestone 3: Core Logic (Implemented & Ready)
-- **Structural Search:** Filtering results by name or ID using **`.filter()`** via the API's query params.
-- **Parameter Sort:** Arrange satellites by Name, SID, or Popularity using **`.sort()`**.
-- **HOF Mastery:** Exhaustive use of Array Higher-Order Functions (`forEach`, `sort`, `filter`) for all data manipulation.
-- **System Purge:** High-contrast Dark Mode and Light Mode toggle via "Signal Toggle."
+I also wanted to prove to myself that I could build a distinctive interface with plain JavaScript and CSS, without depending on a framework to do the heavy lifting.
 
-### ⭐ Bonus Features
-- **Debouncing:** Search inputs are throttled to 600ms to preserve API bandwidth.
-- **Local Storage:** Remembers your theme preference (Dark/Light) between sessions.
-- **Clipboard Integration:** One-click TLE string extraction for external analysis.
+## Design Direction
 
----
+SATELLITE_VOX is intentionally loud. Thick borders, sharp contrast, uppercase labels, and harsh shadows are all part of the visual system. The interface is meant to feel mechanical and a little uncompromising, like a terminal made for operators instead of casual browsing.
 
-## 🛠️ Setup & Execution
-1.  **Repository Clone:**
-    ```bash
-    git clone [your-repo-link]
-    ```
-2.  **Open Architecture:**
-    Simply open `index.html` in any browser. No build steps are required as SATELLITE_VOX uses a vanilla architecture.
-3.  **Command Reality:**
-    Use the `UPLINK_CONTROLLER` to search for "ISS," "STARLINK," or "GPS" to begin data extraction.
+That said, I still wanted it to stay usable. Search is debounced, the layout adapts across screen sizes, loading and error states are visible, and the theme toggle gives the interface some flexibility without losing its identity.
 
----
+## Project Structure
 
-*“Built for scale, not for comfort.”* — **SATELLITE_VOX ARCHIVIST**
+```text
+.
+├── index.html    # Main UI structure
+├── styles.css    # Custom brutalist styling and animations
+├── app.js        # Data fetching, rendering, sorting, theme handling
+└── README.md
+```
+
+## Running Locally
+
+This project does not require a build step.
+
+1. Clone or download the repository.
+2. Open `index.html` in your browser.
+
+If your browser blocks certain features when opening files directly, run a simple local server instead. For example:
+
+```bash
+python3 -m http.server 8000
+```
+
+Then open `http://localhost:8000`.
+
+## Key Features in the Code
+
+- `retrieveOrbits()` fetches satellite data from the API
+- `renderTerminal()` creates the result cards dynamically
+- `organizeLogs()` handles sorting logic
+- `debounceAction()` prevents excessive API requests while typing
+- `applyTheme()` and `loadSettings()` manage theme persistence
+
+## Challenges and Lessons
+
+A few parts of the project were more difficult than they looked:
+
+- Balancing a strong visual style with readability
+- Avoiding too many API calls during live search
+- Making the interface feel responsive without using a frontend framework
+- Keeping the layout consistent across both mobile and desktop screens
+
+The biggest lesson was that visual personality only works when the basics are solid. If search, loading states, and responsiveness are weak, the design stops mattering.
+
+## Future Improvements
+
+- Add pagination controls for browsing more records
+- Show more satellite metadata in each card
+- Add favorites or saved objects instead of placeholder pin actions
+- Improve error handling for API downtime or rate limiting
+- Add tests and split the JavaScript into smaller modules
+
+## Author
+
+Created as a capstone project by Apple.
