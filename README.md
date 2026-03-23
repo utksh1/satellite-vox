@@ -88,4 +88,4 @@ The biggest lesson was that visual personality only works when the basics are so
 
 ## Author
 
-Created as a capstone project by Apple.
+Created as a capstone project by Utkarsh Singh.

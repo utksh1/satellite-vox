@@ -1,5 +1,6 @@
 let orbitalLog = [];
 let currentPage = 1;
+let pinnedSatellites = JSON.parse(localStorage.getItem('vox_pinned') || '[]');
 const API_BASE = 'https://tle.ivanstanojevic.me/api/tle';
 
 const ui = {
@@ -16,40 +17,42 @@ document.addEventListener('DOMContentLoaded', () => {
     loadSettings();
     retrieveOrbits();
     bindTerminalEvents();
-    console.log("📡 TERMINAL_READY: SATELLITE_VOX v1.02_UPLINKED");
+    console.log('TERMINAL_READY: SATELLITE_VOX v1.05_UPLINKED');
 });
 
-async function retrieveOrbits(query = "*", page = 1) {
+async function retrieveOrbits(query = '*', page = 1) {
     currentPage = page;
-    
+
     ui.grid.innerHTML = `
-        <div class="bg-white dark:bg-stone-900 border-4 border-black dark:border-white p-8 block-shadow-sm flex items-center justify-between animate-pulse">
+        <div class="status-card animate-pulse">
             <div>
-                <p class="font-brutalist text-lg dark:text-white">QUERYING_ARCHIVE...</p>
-                <p class="text-[10px] font-bold font-mono text-gray-400 mt-1 uppercase tracking-widest">${query}</p>
+                <p class="font-brutalist text-lg">QUERYING_ARCHIVE...</p>
+                <p class="status-card__meta mt-1">${query}</p>
             </div>
-            <div class="material-symbols-outlined text-3xl animate-spin dark:text-white">sync</div>
+            <div class="material-symbols-outlined text-3xl animate-spin">sync</div>
         </div>
     `;
 
     try {
         const response = await fetch(`${API_BASE}?search=${query}&page=${page}&page-size=30`);
         if (!response.ok) throw new Error('SIGNAL_FAILED');
-        
+
         const data = await response.json();
         orbitalLog = data.member || [];
         renderTerminal(orbitalLog);
-        
-        if (query !== "*" && query !== "") {
+
+        if (query !== '*' && query !== '') {
             notify(`ARCHIVE_FETCH: ${orbitalLog.length} OBJECTS`, 'success');
         }
     } catch (error) {
-        console.error("UPLINK_ERROR:", error);
+        console.error('UPLINK_ERROR:', error);
         notify('TERMINAL_FAILURE: NO SIGNAL', 'error');
         ui.grid.innerHTML = `
-            <div class="bg-warning-red text-white border-4 border-black p-8 block-shadow">
-                <h3 class="font-brutalist text-2xl mb-2">500: NETWORK_VOID</h3>
-                <p class="text-sm font-bold">SIGNAL SEVERED. CHECK CONNECTION.</p>
+            <div class="status-card status-card--error">
+                <div>
+                    <h3 class="font-brutalist text-2xl mb-2">500: NETWORK_VOID</h3>
+                    <p class="text-sm font-bold">SIGNAL SEVERED. CHECK CONNECTION.</p>
+                </div>
             </div>
         `;
     }
@@ -60,41 +63,51 @@ function renderTerminal(records) {
 
     if (records.length === 0) {
         ui.grid.innerHTML = `
-            <div class="bg-white dark:bg-stone-900 border-4 border-black dark:border-white p-8 block-shadow-sm">
-                <p class="font-brutalist text-lg dark:text-white">EMPTY_SET: NO MATCHES</p>
+            <div class="status-card">
+                <p class="font-brutalist text-lg">EMPTY_SET: NO MATCHES</p>
             </div>
         `;
         return;
     }
 
-    records.forEach(sat => {
+    const sortedRecords = [...records].sort((a, b) => {
+        const aPinned = pinnedSatellites.includes(String(a.satelliteId));
+        const bPinned = pinnedSatellites.includes(String(b.satelliteId));
+        if (aPinned && !bPinned) return -1;
+        if (!aPinned && bPinned) return 1;
+        return 0;
+    });
+
+    sortedRecords.forEach((sat) => {
+        const isPinned = pinnedSatellites.includes(String(sat.satelliteId));
         const card = document.createElement('div');
         card.className = 'satellite-card animate-reveal';
         card.innerHTML = `
-            <div class="flex items-center gap-4 md:gap-8 p-4 md:p-6 w-full">
-                <div class="hidden md:flex w-16 h-16 bg-black dark:bg-white text-white dark:text-black items-center justify-center shrink-0 border-2 border-black dark:border-white">
+            <div class="satellite-card__body">
+                <div class="satellite-card__icon">
                     <span class="material-symbols-outlined text-2xl">satellite_alt</span>
                 </div>
-                <div class="flex-1 min-w-0 space-y-2">
-                    <div class="flex flex-wrap items-center gap-3">
-                        <h5 class="text-lg font-brutalist tracking-tighter uppercase dark:text-white truncate">${sat.name || 'UNKNOWN'}</h5>
-                        <span class="bg-warning-yellow border-2 border-black px-2 py-0.5 text-[9px] font-bold text-black uppercase">SID_${sat.satelliteId}</span>
+                <div class="satellite-card__content">
+                    <div class="satellite-card__heading">
+                        <h5 class="satellite-card__title">${sat.name || 'UNKNOWN'}</h5>
+                        <span class="satellite-card__badge">SID_${sat.satelliteId}</span>
+                        ${isPinned ? '<span class="bg-alert text-white px-2 py-0.5 text-[8px] font-bold">PINNED</span>' : ''}
                     </div>
-                    <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-[10px] font-bold text-gray-500 dark:text-gray-400">
-                        <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">calendar_today</span> ${new Date(sat.date).toLocaleDateString()}</span>
-                        <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">database</span> EPOCH: ${new Date(sat.date).getTime()}</span>
+                    <div class="satellite-card__meta-row">
+                        <span class="satellite-card__meta-item"><span class="material-symbols-outlined">calendar_today</span>${new Date(sat.date).toLocaleDateString()}</span>
+                        <span class="satellite-card__meta-item"><span class="material-symbols-outlined">database</span>EPOCH: ${new Date(sat.date).getTime()}</span>
                     </div>
                 </div>
-                <div class="flex items-center gap-2 md:gap-4 shrink-0">
-                    <div class="hidden xl:block text-right pr-4 border-r-2 border-black dark:border-white/20">
-                        <p class="text-[8px] font-bold text-gray-400 tracking-widest uppercase">STATUS</p>
-                        <p class="text-[10px] font-brutalist dark:text-white">NOMINAL</p>
+                <div class="satellite-card__actions">
+                    <div class="satellite-card__status">
+                        <p class="satellite-card__status-label">STATUS</p>
+                        <p class="satellite-card__status-value">NOMINAL</p>
                     </div>
-                    <button class="h-10 px-4 bg-black dark:bg-white text-white dark:text-black font-bold text-[10px] uppercase hover:bg-warning-yellow dark:hover:bg-warning-yellow hover:text-black transition-all active:scale-95 block-shadow-sm border-2 border-black dark:border-white" onclick="copyTLEStrings('${sat.line1}', '${sat.line2}')">
+                    <button class="tle-button" onclick="copyTLEStrings('${sat.line1}', '${sat.line2}')">
                         TLE
                     </button>
-                    <button class="w-10 h-10 bg-white dark:bg-stone-800 border-2 border-black dark:border-white hover:bg-warning-red dark:hover:bg-warning-red hover:text-white transition-all active:scale-95 flex items-center justify-center" onclick="logSatelliteToTerminal('${sat.satelliteId}')">
-                        <span class="material-symbols-outlined text-lg">star</span>
+                    <button class="pin-button ${isPinned ? 'bg-alert! text-white!' : ''}" onclick="logSatelliteToTerminal('${sat.satelliteId}')">
+                        <span class="material-symbols-outlined text-lg">${isPinned ? 'star' : 'star_outline'}</span>
                     </button>
                 </div>
             </div>
@@ -104,9 +117,9 @@ function renderTerminal(records) {
 }
 
 function organizeLogs() {
-    let activeSort = ui.sortSelect.value;
-    let filteredRecords = [...orbitalLog];
-    
+    const activeSort = ui.sortSelect.value;
+    const filteredRecords = [...orbitalLog];
+
     if (activeSort === 'name') {
         filteredRecords.sort((a, b) => a.name.localeCompare(b.name));
     } else if (activeSort === 'id') {
@@ -135,15 +148,10 @@ function loadSettings() {
 }
 
 function applyTheme(mode) {
-    if (mode === 'dark') {
-        document.documentElement.classList.add('dark');
-        ui.body.classList.add('dark');
-        ui.themeToggle.innerText = 'SIGNAL_BRIGHT';
-    } else {
-        document.documentElement.classList.remove('dark');
-        ui.body.classList.remove('dark');
-        ui.themeToggle.innerText = 'SIGNAL_SHADOW';
-    }
+    const isDark = mode === 'dark';
+    document.documentElement.classList.toggle('dark', isDark);
+    ui.body.classList.toggle('dark', isDark);
+    ui.themeToggle.innerText = isDark ? 'MODE_DARK' : 'MODE_LIGHT';
     localStorage.setItem('vox_theme', mode);
 }
 
@@ -155,24 +163,24 @@ function bindTerminalEvents() {
 
     ui.search.addEventListener('input', debounceAction((e) => {
         const val = e.target.value.trim();
-        retrieveOrbits(val === "" ? "*" : val);
+        retrieveOrbits(val === '' ? '*' : val);
     }, 600));
 
     ui.sortSelect.addEventListener('change', () => organizeLogs());
 
     if (ui.refreshBtn) {
         ui.refreshBtn.addEventListener('click', () => {
-            retrieveOrbits(ui.search.value || "*");
+            retrieveOrbits(ui.search.value || '*');
         });
     }
 }
 
 function notify(msg, type) {
     const toast = document.createElement('div');
-    toast.className = `toast ${type} block-shadow-sm border-2 border-black dark:border-white`;
+    toast.className = `toast ${type}`;
     toast.innerText = msg;
     ui.notificationArea.appendChild(toast);
-    
+
     setTimeout(() => {
         toast.style.opacity = '0';
         toast.style.transform = 'translateY(10px)';
@@ -190,5 +198,17 @@ window.copyTLEStrings = async (l1, l2) => {
 };
 
 window.logSatelliteToTerminal = (id) => {
-    notify(`SAT_${id}_PINNED`, 'success');
+    const satId = String(id);
+    const index = pinnedSatellites.indexOf(satId);
+    
+    if (index > -1) {
+        pinnedSatellites.splice(index, 1);
+        notify(`SAT_${id}_UNPINNED`, 'success');
+    } else {
+        pinnedSatellites.push(satId);
+        notify(`SAT_${id}_PINNED_TO_VAULT`, 'success');
+    }
+    
+    localStorage.setItem('vox_pinned', JSON.stringify(pinnedSatellites));
+    renderTerminal(orbitalLog);
 };
