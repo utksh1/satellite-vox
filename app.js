@@ -17,19 +17,19 @@ document.addEventListener('DOMContentLoaded', () => {
     loadSettings();
     retrieveOrbits();
     bindTerminalEvents();
-    console.log('TERMINAL_READY: SATELLITE_VOX v1.05_UPLINKED');
+    console.log('SATELLITE_VOX_CUTE: READY');
 });
 
 async function retrieveOrbits(query = '*', page = 1) {
     currentPage = page;
 
     ui.grid.innerHTML = `
-        <div class="status-card animate-pulse">
+        <div class="bg-white dark:bg-primary-950/20 rounded-[2.5rem] p-12 flex items-center justify-between border-2 border-primary-50 dark:border-primary-900 animate-pulse">
             <div>
-                <p class="font-brutalist text-lg">QUERYING_ARCHIVE...</p>
-                <p class="status-card__meta mt-1">${query}</p>
+                <p class="font-header text-xl font-bold text-primary-300">QUERYING_STASH...</p>
+                <p class="text-[10px] font-bold text-primary-200 mt-1 uppercase tracking-widest">${query}</p>
             </div>
-            <div class="material-symbols-outlined text-3xl animate-spin">sync</div>
+            <div class="material-symbols-outlined text-4xl text-primary-200 animate-spin">cloud_sync</div>
         </div>
     `;
 
@@ -46,13 +46,11 @@ async function retrieveOrbits(query = '*', page = 1) {
         }
     } catch (error) {
         console.error('UPLINK_ERROR:', error);
-        notify('TERMINAL_FAILURE: NO SIGNAL', 'error');
+        notify('SIGNAL_FAILURE', 'error');
         ui.grid.innerHTML = `
-            <div class="status-card status-card--error">
-                <div>
-                    <h3 class="font-brutalist text-2xl mb-2">500: NETWORK_VOID</h3>
-                    <p class="text-sm font-bold">SIGNAL SEVERED. CHECK CONNECTION.</p>
-                </div>
+            <div class="bg-primary-50 dark:bg-primary-950 p-12 rounded-[2.5rem] border-2 border-primary-100 dark:border-primary-900">
+                <h3 class="font-header text-2xl font-bold text-primary-700">500: NETWORK_VOID</h3>
+                <p class="text-sm font-bold text-primary-400">SIGNAL SEVERED. CHECK CONNECTION.</p>
             </div>
         `;
     }
@@ -63,8 +61,8 @@ function renderTerminal(records) {
 
     if (records.length === 0) {
         ui.grid.innerHTML = `
-            <div class="status-card">
-                <p class="font-brutalist text-lg">EMPTY_SET: NO MATCHES</p>
+            <div class="bg-white dark:bg-primary-900 rounded-[2.5rem] p-12 border border-primary-50 dark:border-primary-800">
+                <p class="font-header text-lg font-bold text-primary-300">EMPTY_SET: NO MATCHES</p>
             </div>
         `;
         return;
@@ -83,31 +81,27 @@ function renderTerminal(records) {
         const card = document.createElement('div');
         card.className = 'satellite-card animate-reveal';
         card.innerHTML = `
-            <div class="satellite-card__body">
+            <div class="flex items-center gap-6 p-6 md:p-8 w-full">
                 <div class="satellite-card__icon">
-                    <span class="material-symbols-outlined text-2xl">satellite_alt</span>
+                    <span class="material-symbols-outlined text-3xl">satellite_alt</span>
                 </div>
-                <div class="satellite-card__content">
-                    <div class="satellite-card__heading">
-                        <h5 class="satellite-card__title">${sat.name || 'UNKNOWN'}</h5>
+                <div class="flex-1 min-w-0 space-y-2">
+                    <div class="flex flex-wrap items-center gap-4">
+                        <h5 class="text-xl font-header font-bold text-primary-800 dark:text-primary-100 truncate">${sat.name || 'UNKNOWN'}</h5>
                         <span class="satellite-card__badge">SID_${sat.satelliteId}</span>
-                        ${isPinned ? '<span class="bg-alert text-white px-2 py-0.5 text-[8px] font-bold">PINNED</span>' : ''}
+                        ${isPinned ? '<span class="bg-primary-600 text-white px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest shadow-lg shadow-primary-200">PINNED</span>' : ''}
                     </div>
-                    <div class="satellite-card__meta-row">
-                        <span class="satellite-card__meta-item"><span class="material-symbols-outlined">calendar_today</span>${new Date(sat.date).toLocaleDateString()}</span>
-                        <span class="satellite-card__meta-item"><span class="material-symbols-outlined">database</span>EPOCH: ${new Date(sat.date).getTime()}</span>
+                    <div class="flex flex-wrap items-center gap-x-5 gap-y-1 text-[11px] font-bold text-primary-400 dark:text-primary-500">
+                        <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">schedule</span> ${new Date(sat.date).toLocaleDateString()}</span>
+                        <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">fingerprint</span>${new Date(sat.date).getTime()}</span>
                     </div>
                 </div>
-                <div class="satellite-card__actions">
-                    <div class="satellite-card__status">
-                        <p class="satellite-card__status-label">STATUS</p>
-                        <p class="satellite-card__status-value">NOMINAL</p>
-                    </div>
+                <div class="flex items-center gap-3 shrink-0">
                     <button class="tle-button" onclick="copyTLEStrings('${sat.line1}', '${sat.line2}')">
                         TLE
                     </button>
-                    <button class="pin-button ${isPinned ? 'bg-alert! text-white!' : ''}" onclick="logSatelliteToTerminal('${sat.satelliteId}')">
-                        <span class="material-symbols-outlined text-lg">${isPinned ? 'star' : 'star_outline'}</span>
+                    <button class="pin-button ${isPinned ? 'bg-primary-600! text-white!' : ''}" onclick="togglePin('${sat.satelliteId}')">
+                        <span class="material-symbols-outlined text-xl">${isPinned ? 'favorite' : 'favorite_border'}</span>
                     </button>
                 </div>
             </div>
@@ -177,13 +171,13 @@ function bindTerminalEvents() {
 
 function notify(msg, type) {
     const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
+    toast.className = `toast ${type} animate-reveal`;
     toast.innerText = msg;
     ui.notificationArea.appendChild(toast);
 
     setTimeout(() => {
         toast.style.opacity = '0';
-        toast.style.transform = 'translateY(10px)';
+        toast.style.transform = 'translateY(12px)';
         setTimeout(() => toast.remove(), 400);
     }, 4000);
 }
@@ -197,16 +191,16 @@ window.copyTLEStrings = async (l1, l2) => {
     }
 };
 
-window.logSatelliteToTerminal = (id) => {
+window.togglePin = (id) => {
     const satId = String(id);
     const index = pinnedSatellites.indexOf(satId);
     
     if (index > -1) {
         pinnedSatellites.splice(index, 1);
-        notify(`SAT_${id}_UNPINNED`, 'success');
+        notify(`UNPINNED`, 'success');
     } else {
         pinnedSatellites.push(satId);
-        notify(`SAT_${id}_PINNED_TO_VAULT`, 'success');
+        notify(`PINNED_TO_VAULT`, 'success');
     }
     
     localStorage.setItem('vox_pinned', JSON.stringify(pinnedSatellites));
