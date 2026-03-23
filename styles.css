@@ -1,0 +1,302 @@
+/* styles.css - The Architect's Visual Manifest */
+:root {
+    --bg-dark: #0a0a0c;
+    --bg-light: #f8fafc;
+    --glass-dark: rgba(255, 255, 255, 0.05);
+    --glass-dark-border: rgba(255, 255, 255, 0.1);
+    --glass-light: rgba(0, 0, 0, 0.03);
+    --glass-light-border: rgba(0, 0, 0, 0.08);
+    --accent: #6366f1;
+    --accent-hover: #818cf8;
+    --text-dark: #f8fafc;
+    --text-dark-dim: #94a3b8;
+    --text-light: #1e293b;
+    --text-light-dim: #64748b;
+    --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    --blur: 12px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: var(--transition);
+    position: relative;
+    padding: 0 1rem;
+}
+
+body.dark {
+    background: var(--bg-dark);
+    color: var(--text-dark);
+}
+
+body.light {
+    background: var(--bg-light);
+    color: var(--text-light);
+}
+
+/* Background Accents */
+.glow-sphere {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: -1;
+    opacity: 0.15;
+    pointer-events: none;
+}
+
+.sphere-1 {
+    width: 400px;
+    height: 400px;
+    background: var(--accent);
+    top: -100px;
+    right: -100px;
+}
+
+.sphere-2 {
+    width: 300px;
+    height: 300px;
+    background: #ec4899;
+    bottom: -50px;
+    left: -50px;
+}
+
+/* Header */
+.prism-header {
+    max-width: 1000px;
+    width: 100%;
+    margin: 2rem auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-area h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.logo-area .shadow {
+    color: var(--accent);
+}
+
+.tagline {
+    font-size: 0.875rem;
+    font-weight: 300;
+    color: var(--text-dark-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+}
+
+.icon-btn {
+    background: var(--glass-dark);
+    border: 1px solid var(--glass-dark-border);
+    padding: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    color: inherit;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-btn:hover {
+    background: var(--glass-dark-border);
+    transform: translateY(-2px);
+}
+
+/* Main Forge Area */
+.prism-main {
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 auto 4rem auto;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.glass-panel {
+    background: var(--glass-dark);
+    backdrop-filter: blur(var(--blur));
+    -webkit-backdrop-filter: blur(var(--blur));
+    border: 1px solid var(--glass-dark-border);
+    border-radius: 24px;
+    padding: 2rem;
+    transition: var(--transition);
+}
+
+.main-forge {
+    padding: 3rem 2rem;
+    text-align: center;
+}
+
+.input-group {
+    display: flex;
+    gap: 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+input {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-dark-border);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    color: inherit;
+    font-family: inherit;
+    font-size: 1rem;
+    flex: 1;
+    outline: none;
+    transition: var(--transition);
+}
+
+input:focus {
+    border-color: var(--accent);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.primary-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0 2rem;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.primary-btn:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+}
+
+/* Vault Section */
+.vault-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.vault-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.search-box {
+    position: relative;
+    max-width: 400px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.search-box svg {
+    position: absolute;
+    left: 1.25rem;
+    color: var(--text-dark-dim);
+}
+
+.search-box input {
+    padding-left: 3.5rem;
+}
+
+.sort-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+select {
+    background: var(--glass-dark);
+    border: 1px solid var(--glass-dark-border);
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    color: inherit;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+/* Vault Grid */
+.vault-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.link-card {
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+}
+
+.link-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* Skeleton State */
+.skeleton {
+    height: 140px;
+    animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+    100% { opacity: 0.3; }
+}
+
+/* Footer */
+.prism-footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-dark-dim);
+    font-size: 0.875rem;
+}
+
+/* Utility */
+.hidden { display: none; }
+
+/* Light Mode Overrides */
+body.light .glass-panel {
+    background: var(--glass-light);
+    border-color: var(--glass-light-border);
+}
+
+body.light input, body.light select {
+    background: white;
+    border-color: var(--glass-light-border);
+}
+
+body.light .tagline, body.light .text-dark-dim {
+    color: var(--text-light-dim);
+}
+
+@media (max-width: 768px) {
+    .input-group {
+        flex-direction: column;
+    }
+    .primary-btn {
+        padding: 1rem;
+    }
+    .vault-controls {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
