@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="SATELLITE_VOX favicon">
+  <rect x="24" y="24" width="464" height="464" rx="112" fill="#332A00"/>
+  <g transform="rotate(-24 256 256)">
+    <ellipse cx="256" cy="256" rx="152" ry="104" fill="none" stroke="#FFDF3D" stroke-width="32"/>
+  </g>
+  <circle cx="366" cy="144" r="24" fill="#B93815"/>
+  <rect x="226" y="218" width="60" height="76" rx="16" fill="#FFFCF0"/>
+  <rect x="154" y="230" width="58" height="52" rx="10" fill="#FFEA80"/>
+  <rect x="300" y="230" width="58" height="52" rx="10" fill="#FFEA80"/>
+  <rect x="247" y="192" width="18" height="34" rx="8" fill="#FFFCF0"/>
+  <path d="M256 294v42" stroke="#FFFCF0" stroke-width="18" stroke-linecap="round"/>
+</svg>

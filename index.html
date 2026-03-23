@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>SATELLITE_VOX | ORBITAL_ARCHIVE</title>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>SATELLITE_VOX | MONO_ARCHIVE</title>
+    <meta name="theme-color" content="#332A00" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="manifest" href="site.webmanifest" />
 
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Outfit:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css">
 
     <script id="tailwind-config">
@@ -17,29 +22,24 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: {
-                            50: "#FFF5F7",
-                            100: "#FFEBEF",
-                            200: "#FFD6E0",
-                            300: "#FFC2D0",
-                            400: "#FFA3B9",
-                            500: "#FF809D",
-                            600: "#FF4D76",
-                            700: "#FF1A4F",
-                            800: "#E60036",
-                            900: "#990024",
-                            950: "#4D0012"
+                        mono: {
+                            50: "#FAFAFA",
+                            100: "#F4F4F5",
+                            200: "#E4E4E7",
+                            300: "#BDBDC2",
+                            400: "#95959D",
+                            500: "#6E6E77",
+                            600: "#56565D",
+                            700: "#3D3D42",
+                            800: "#252528",
+                            900: "#18181B",
+                            950: "#0C0C0D"
                         },
-                        ui: {
-                            background: "#FFF5F7",
-                            card: "#FFFFFF",
-                            alert: "#FF1A4F",
-                            star: "#FFC2D0"
-                        }
+                        alert: "#000000"
                     },
                     fontFamily: {
-                        header: ["Outfit", "sans-serif"],
-                        body: ["Space Grotesk", "sans-serif"],
+                        brutalist: ["Archivo Black", "sans-serif"],
+                        wide: ["Space Grotesk", "sans-serif"],
                         mono: ["JetBrains Mono", "monospace"]
                     }
                 },
@@ -47,38 +47,34 @@
         }
     </script>
 </head>
-<body class="min-h-screen structural-grid bg-primary-50 text-primary-900 selection:bg-primary-200 selection:text-primary-900 dark:bg-primary-950 dark:text-primary-50 transition-colors duration-300" id="prism-body">
-    <header class="border-b-4 border-primary-100 dark:border-primary-900 bg-white dark:bg-primary-950 p-6 sticky top-0 z-50 flex justify-between items-center gap-6">
+<body class="min-h-screen structural-grid bg-mono-50 text-mono-950 selection:bg-mono-900 selection:text-mono-50 dark:bg-mono-950 dark:text-mono-50 transition-colors duration-300" id="prism-body">
+    <header class="border-b-4 border-mono-950 dark:border-mono-100 bg-mono-100 dark:bg-mono-900 p-6 sticky top-0 z-50 flex justify-between items-center gap-6">
         <div class="flex items-center gap-4">
-            <h1 class="font-header text-3xl font-bold tracking-tight text-primary-600 dark:text-primary-400">SATELLITE_VOX</h1>
-            <span class="hidden md:block bg-primary-100 dark:bg-primary-800 px-3 py-1 rounded-full text-[10px] font-bold text-primary-600 dark:text-primary-300 uppercase tracking-widest">UPLINK_UWF</span>
+            <h1 class="font-brutalist text-2xl tracking-tighter text-mono-950 dark:text-mono-50 uppercase">SATELLITE_VOX</h1>
+            <span class="hidden md:block bg-mono-950 text-mono-50 dark:bg-mono-50 dark:text-mono-950 border-2 border-mono-950 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest">UPLINK_MONO</span>
         </div>
-        <nav class="flex gap-4">
-            <button id="refresh-btn" class="px-5 py-2.5 bg-primary-500 text-white rounded-2xl text-[11px] font-bold uppercase hover:bg-primary-600 transition-all active:scale-95 shadow-lg shadow-primary-200 dark:shadow-none flex items-center gap-2">
-                <span class="material-symbols-outlined text-[18px]">sync</span> PULL
+        <nav class="flex gap-3">
+            <button id="refresh-btn" class="border-2 border-mono-950 dark:border-mono-100 px-4 py-2 bg-mono-950 text-white text-[10px] font-bold uppercase flex items-center gap-2 hover:bg-white hover:text-mono-950 dark:hover:bg-mono-50 dark:hover:text-mono-950 transition-all active:scale-95">
+                <span class="material-symbols-outlined text-sm">sync</span> PULL
             </button>
-            <button id="theme-toggle" class="bg-white dark:bg-primary-900 px-5 py-2.5 rounded-2xl text-[11px] font-bold text-primary-600 dark:text-primary-300 border-2 border-primary-100 hover:border-primary-300 transition-all active:scale-95 shadow-sm">
+            <button id="theme-toggle" class="border-2 border-mono-950 dark:border-mono-100 px-4 py-2 bg-white dark:bg-mono-800 text-mono-950 dark:text-mono-50 text-[10px] font-bold uppercase hover:bg-mono-950 hover:text-white transition-all active:scale-95">
                 THEME
             </button>
         </nav>
     </header>
 
     <div class="max-w-6xl mx-auto w-full px-6 py-12 space-y-12">
-        <section class="bg-white dark:bg-primary-900 rounded-[2.5rem] p-10 shadow-xl shadow-primary-100/50 dark:shadow-none border border-primary-100 dark:border-primary-800">
-            <div class="flex items-center gap-3 mb-8">
-                <div class="w-12 h-12 bg-primary-100 dark:bg-primary-800 rounded-2xl flex items-center justify-center text-primary-600">
-                    <span class="material-symbols-outlined">search</span>
-                </div>
-                <div>
-                    <h3 class="font-header text-2xl font-bold text-primary-700 dark:text-primary-300">Archive_Search</h3>
-                    <p class="text-[10px] font-bold text-primary-400 uppercase tracking-widest leading-none mt-1">Satellite Controller 01</p>
-                </div>
+        <section class="bg-mono-100 dark:bg-mono-900 border-[6px] border-mono-950 dark:border-mono-100 p-8 block-shadow">
+            <div class="flex items-center gap-3 mb-6 border-b-2 border-mono-950 dark:border-mono-100 pb-4">
+                <span class="bg-mono-950 text-mono-50 border-2 border-mono-950 px-2 py-0.5 font-bold text-[10px]">VAULT_01</span>
+                <h3 class="font-brutalist text-xl text-mono-950 dark:text-mono-50 uppercase">Search_Module</h3>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
-                <div class="md:col-span-12 space-y-3">
-                    <div class="flex flex-col md:flex-row gap-4">
-                        <input id="vault-search" class="w-full bg-primary-50/50 dark:bg-primary-950/50 border-2 border-primary-100 dark:border-primary-800 rounded-3xl p-5 focus:ring-4 focus:ring-primary-100 focus:border-primary-300 focus:bg-white dark:focus:bg-primary-800 text-lg font-body dark:text-white placeholder:text-primary-300" placeholder="NAME / NORAD_ID" type="text"/>
-                        <select id="sort-select" class="bg-white dark:bg-primary-900 border-2 border-primary-100 dark:border-primary-800 rounded-3xl px-8 p-5 font-bold text-sm text-primary-600 dark:text-primary-300 focus:ring-4 focus:ring-primary-100 transition-all cursor-pointer">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                <div class="md:col-span-12 space-y-2">
+                    <label class="text-[10px] font-bold text-mono-600 dark:text-mono-400 uppercase tracking-widest">Archive_Query</label>
+                    <div class="flex flex-col md:flex-row gap-3">
+                        <input id="vault-search" class="w-full bg-white dark:bg-mono-950 border-4 border-mono-950 dark:border-mono-100 p-4 focus:ring-0 focus:bg-mono-50 dark:focus:bg-mono-800 text-lg font-mono uppercase text-mono-950 dark:text-mono-50 placeholder:text-mono-300" placeholder="NAME / NORAD_ID" type="text" />
+                        <select id="sort-select" class="bg-white dark:bg-mono-950 border-4 border-mono-950 dark:border-mono-100 p-4 font-bold text-sm text-mono-950 dark:text-mono-50 uppercase">
                             <option value="name">NAME</option>
                             <option value="id">SID</option>
                             <option value="popularity">POP</option>
@@ -88,33 +84,27 @@
             </div>
         </section>
 
-        <section class="space-y-8">
-            <div class="flex justify-between items-end px-4">
-                <div>
-                    <h4 class="font-header text-3xl font-bold text-primary-800 dark:text-primary-200">Orbital_Logs</h4>
-                    <p class="text-[10px] font-bold text-primary-400 uppercase tracking-widest mt-1">Live Telemetry Stash</p>
-                </div>
+        <section class="space-y-6">
+            <div class="flex justify-between items-end border-b-4 border-mono-950 dark:border-mono-100 pb-4">
+                <h4 class="font-brutalist text-2xl text-mono-950 dark:text-mono-50 uppercase">Satellite_Records</h4>
+                <p class="text-[10px] font-bold text-mono-500 uppercase tracking-widest">System_Live</p>
             </div>
-            
-            <div id="link-vault-grid" class="grid grid-cols-1 gap-6">
-                <div class="bg-white dark:bg-primary-900 rounded-[2.5rem] p-10 flex items-center justify-between border border-primary-50 animate-pulse">
-                    <p class="font-header text-lg font-bold text-primary-300 tracking-widest">BOOTING...</p>
+            <div id="link-vault-grid" class="grid grid-cols-1 gap-4">
+                <div class="status-card">
+                    <p class="font-brutalist text-sm tracking-widest">SYNCING_ORBITS...</p>
                 </div>
             </div>
         </section>
     </div>
 
-    <footer class="bg-white dark:bg-primary-950 border-t-2 border-primary-50 dark:border-primary-900 p-12 mt-20">
+    <footer class="bg-mono-100 dark:bg-mono-900 border-t-4 border-mono-950 dark:border-mono-100 p-8 mt-20">
         <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-            <h6 class="font-header text-2xl font-bold text-primary-400">SATELLITE_VOX</h6>
-            <div class="flex gap-8 text-[11px] font-bold text-primary-300 uppercase tracking-widest">
-                <span>© 2026 Archive</span>
-                <span>Space Data_HQ</span>
-            </div>
+            <h6 class="font-brutalist text-xl text-mono-950 dark:text-mono-50">SATELLITE_VOX</h6>
+            <p class="text-[9px] font-bold text-mono-500 uppercase tracking-[0.2em]">© 2026 MONOCHROME DATA STASH. RAW_OUTPUT.</p>
         </div>
     </footer>
 
-    <div id="notification-area" class="fixed bottom-8 right-8 z-[100] flex flex-col gap-3"></div>
+    <div id="notification-area" class="fixed bottom-6 right-6 z-[100] flex flex-col gap-2"></div>
     <script src="app.js"></script>
 </body>
 </html>
