@@ -1,51 +1,56 @@
 # SATELLITE_VOX: THE ORBITAL ARCHIVE 🛰️
 
-**SATELLITE_VOX** is a Neo-Brutalist interface into the digital debris and functional machines orbiting Earth. Built as a Capstone Project to demonstrate technical mastery in JavaScript, API integration, and high-contrast UI architecture, it leverages the **TLE (Two-Line Element) API** to query, filter, and analyze orbital data with surgical precision.
+**SATELLITE_VOX** is a high-fidelity Neo-Brutalist interface designed to query and analyze the digital debris and functional machines orbiting Earth. Built as a Capstone Project to demonstrate technical mastery in JavaScript, API integration, and high-contrast UI architecture.
 
 ---
 
 ## 🚀 Vision & Purpose
-As Earth's orbit becomes increasingly congested, SATELLITE_VOX provides a raw, unfiltered terminal for space situational awareness. It moves away from "pretty" aesthetics into **Neo-Brutalism**: NO DECORATION, ONLY FUNCTION.
+SATELLITE_VOX provides a raw, unfiltered terminal for space situational awareness. It prioritizes **function over form**, utilizing the "RAW INPUT" Neo-Brutalist aesthetic: NO DECORATION, ONLY DATA.
 
 ### 🛠️ Core Technologies
 - **API Conduit:** [TLE API (v2.0.0)](https://tle.ivanstanojevic.me) - Sourcing daily data from CelesTrak.
-- **UI Architecture:** Neo-Brutalism (Heavy borders, Structural Black, Concrete Mids).
-- **Styling:** Custom CSS + Tailwind CSS (via CDN) for structural consistency.
+- **UI Architecture:** Neo-Brutalism (Heavy 6px+ borders, Structural Black, Concrete Mids).
+- **Styling:** Custom CSS + Tailwind CSS (via CDN) for structural logic.
 - **Engine:** Vanilla JavaScript (ES6+).
 
 ---
 
 ## 💎 Features (The Roadmap)
 
-### 🌀 Milestone 2: Orbital Uplink (API Integration)
+### ✅ Milestone 1: Project Setup (Completed Mar 23rd)
+- **Concept Pivot:** Transitioned from URL Shortener to Satellite Tracking.
+- **Structural Init:** Repository established with Neo-Brutalist baseline.
+- **README Documentation:** Defined purpose, tech stack, and roadmap.
+
+### 🌀 Milestone 2: Orbital Uplink (Completed)
 - **Direct Collection Query:** Integration with `GET /api/tle` for searchable collections.
 - **Dynamic Satellite Logs:** Real-time rendering of TLE records with "Copy TLE" feedback.
-- **Efficiency Metrics:** Visual indicators for orbital eccentricity and inclination.
-- **Responsive Terminal:** A brutalist layout that adapts from mobile to ultra-wide displays.
+- **Loading States:** Brutalist skeleton indicators during API fetch operations.
+- **Responsive Terminal:** Fully functional across Mobile (iPhone X), Tablet, and Desktop viewports.
 
-### ⚙️ Milestone 3: Core Logic (Intelligence)
-- **Structural Search:** Filtering results by name or ID using **`.filter()`**.
-- **Parameter Sort:** Arrange satellites by name, ID, or "Popularity" using **`.sort()`**.
-- **Inclination Filter:** Category-based slicing for polar vs equatorial orbits using **`.filter()`**.
-- **System Purge:** A theme toggle for high-contrast "Dark Mode" and "Concrete Mode."
+### ⚙️ Milestone 3: Core Logic (Implemented & Ready)
+- **Structural Search:** Filtering results by name or ID using **`.filter()`** via the API's query params.
+- **Parameter Sort:** Arrange satellites by Name, SID, or Popularity using **`.sort()`**.
+- **HOF Mastery:** Exhaustive use of Array Higher-Order Functions (`forEach`, `sort`, `filter`) for all data manipulation.
+- **System Purge:** High-contrast Dark Mode and Light Mode toggle via "Signal Toggle."
 
-### ⭐ Bonus Ascensions
-- **Persistence:** Save favorite satellites to `localStorage` for offline reference.
-- **Debounced Search:** Avoid overwhelming the API on every keystroke.
-- **Infinite Archive:** Vertical scroll pagination to explore the entire TLE dataset.
+### ⭐ Bonus Features
+- **Debouncing:** Search inputs are throttled to 600ms to preserve API bandwidth.
+- **Local Storage:** Remembers your theme preference (Dark/Light) between sessions.
+- **Clipboard Integration:** One-click TLE string extraction for external analysis.
 
 ---
 
 ## 🛠️ Setup & Execution
-1.  **Clone the Repository:**
+1.  **Repository Clone:**
     ```bash
     git clone [your-repo-link]
     ```
-2.  **Open in Browser:**
-    Open `index.html` in any modern web browser or use a Live Server.
+2.  **Open Architecture:**
+    Simply open `index.html` in any browser. No build steps are required as SATELLITE_VOX uses a vanilla architecture.
 3.  **Command Reality:**
-    Search for "ISS," "Starlink," or "Hubble" to begin the uplink.
+    Use the `UPLINK_CONTROLLER` to search for "ISS," "STARLINK," or "GPS" to begin data extraction.
 
 ---
 
-*“Built for scale, not for comfort.”* — **SATELLITE_VOX ARHIVIST**
+*“Built for scale, not for comfort.”* — **SATELLITE_VOX ARCHIVIST**
