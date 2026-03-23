@@ -1,17 +1,34 @@
-/* styles.css - The Architect's Visual Manifest */
+/* 
+ * styles.css - The Architect's Visual Manifest 
+ * 
+ * DESIGN NOTES:
+ * I'm leaning heavily into Glassmorphism here. The 'blur' is key.
+ * Don't touch the --blur variable unless you want the UI to feel 'cheap'.
+ * The glow spheres are what make this feel like the Velvet Void.
+ */
+
 :root {
+    /* Color Palette - Stay sleek, stay dark. */
     --bg-dark: #0a0a0c;
     --bg-light: #f8fafc;
+    
+    /* Glass Effect Tokens */
     --glass-dark: rgba(255, 255, 255, 0.05);
     --glass-dark-border: rgba(255, 255, 255, 0.1);
     --glass-light: rgba(0, 0, 0, 0.03);
     --glass-light-border: rgba(0, 0, 0, 0.08);
+    
+    /* Brand Accent */
     --accent: #6366f1;
     --accent-hover: #818cf8;
+    
+    /* Typography */
     --text-dark: #f8fafc;
     --text-dark-dim: #94a3b8;
     --text-light: #1e293b;
     --text-light-dim: #64748b;
+    
+    /* Motion & Feel */
     --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     --blur: 12px;
 }
@@ -31,6 +48,7 @@ body {
     padding: 0 1rem;
 }
 
+/* Theme Classes */
 body.dark {
     background: var(--bg-dark);
     color: var(--text-dark);
@@ -41,11 +59,15 @@ body.light {
     color: var(--text-light);
 }
 
-/* Background Accents */
+/* 
+ * BACKGROUND GLOW 
+ * These spheres are fixed. They don't move with the scroll.
+ * They give the illusion of depth in the Void.
+ */
 .glow-sphere {
     position: fixed;
     border-radius: 50%;
-    filter: blur(80px);
+    filter: blur(80px); /* This high blur is non-negotiable */
     z-index: -1;
     opacity: 0.15;
     pointer-events: none;
@@ -67,7 +89,9 @@ body.light {
     left: -50px;
 }
 
-/* Header */
+/* 
+ * HEADER & BRANDING 
+ */
 .prism-header {
     max-width: 1000px;
     width: 100%;
@@ -95,25 +119,9 @@ body.light {
     letter-spacing: 0.2em;
 }
 
-.icon-btn {
-    background: var(--glass-dark);
-    border: 1px solid var(--glass-dark-border);
-    padding: 12px;
-    border-radius: 50%;
-    cursor: pointer;
-    color: inherit;
-    transition: var(--transition);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.icon-btn:hover {
-    background: var(--glass-dark-border);
-    transform: translateY(-2px);
-}
-
-/* Main Forge Area */
+/* 
+ * THE FORGE (Input Area) 
+ */
 .prism-main {
     max-width: 1000px;
     width: 100%;
@@ -181,7 +189,9 @@ input:focus {
     box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
 }
 
-/* Vault Section */
+/* 
+ * THE VAULT (Output Dashboard) 
+ */
 .vault-section {
     display: flex;
     flex-direction: column;
@@ -230,7 +240,9 @@ select {
     cursor: pointer;
 }
 
-/* Vault Grid */
+/* 
+ * VAULT GRID & CARDS 
+ */
 .vault-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -247,33 +259,66 @@ select {
 .link-card:hover {
     transform: translateY(-5px);
     border-color: var(--accent);
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.08); /* Glow factor */
 }
 
-/* Skeleton State */
-.skeleton {
-    height: 140px;
-    animation: pulse 2s infinite ease-in-out;
+/* Interactive elements within the card */
+.short-link-row {
+    margin: 1rem 0;
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: var(--accent);
 }
 
-@keyframes pulse {
-    0% { opacity: 0.3; }
-    50% { opacity: 0.6; }
-    100% { opacity: 0.3; }
+.original-link {
+    font-size: 0.875rem;
+    color: var(--text-dark-dim);
+    word-break: break-all;
 }
 
-/* Footer */
+.card-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.copy-btn {
+    background: var(--glass-dark-border);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    color: var(--text-dark);
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.copy-btn:hover {
+    background: var(--accent);
+}
+
+.card-date {
+    font-size: 0.75rem;
+    color: var(--text-dark-dim);
+}
+
+/* 
+ * FOOTER & UTILITY 
+ */
 .prism-footer {
     text-align: center;
-    padding: 2rem;
+    padding: 4rem 2rem 2rem 2rem;
     color: var(--text-dark-dim);
     font-size: 0.875rem;
 }
 
-/* Utility */
 .hidden { display: none; }
 
-/* Light Mode Overrides */
+/* 
+ * LIGHT MODE OVERRIDES 
+ * Gently shifting the void for the sun-seekers.
+ */
 body.light .glass-panel {
     background: var(--glass-light);
     border-color: var(--glass-light-border);
@@ -282,21 +327,33 @@ body.light .glass-panel {
 body.light input, body.light select {
     background: white;
     border-color: var(--glass-light-border);
+    color: var(--text-light);
 }
 
 body.light .tagline, body.light .text-dark-dim {
     color: var(--text-light-dim);
 }
 
+body.light .copy-btn {
+    background: var(--glass-light-border);
+    color: var(--text-light);
+}
+
+/* 
+ * RESPONSIVENESS 
+ * Keep it beautiful on all glass surfaces.
+ */
 @media (max-width: 768px) {
     .input-group {
         flex-direction: column;
     }
     .primary-btn {
-        padding: 1rem;
+        padding: 1.25rem;
     }
     .vault-controls {
         flex-direction: column;
         align-items: flex-start;
     }
 }
+
+/* Made with ❤️ and caffeine for The Velvet Void. */
