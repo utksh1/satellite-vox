@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadSettings();
     retrieveOrbits();
     bindTerminalEvents();
-    console.log('SATELLITE_VOX_MONO: UPLINKED');
+    console.log('TERMINAL_READY: SATELLITE_VOX v1.06_UPLINKED');
 });
 
 async function retrieveOrbits(query = '*', page = 1) {
@@ -26,10 +26,10 @@ async function retrieveOrbits(query = '*', page = 1) {
     ui.grid.innerHTML = `
         <div class="status-card animate-pulse">
             <div>
-                <p class="font-brutalist text-lg">RETRIEVING_ARCHIVE...</p>
+                <p class="font-brutalist text-lg">QUERYING_ARCHIVE...</p>
                 <p class="status-card__meta mt-1">${query}</p>
             </div>
-            <div class="material-symbols-outlined text-3xl animate-spin">refresh</div>
+            <div class="material-symbols-outlined text-3xl animate-spin">sync</div>
         </div>
     `;
 
@@ -53,7 +53,6 @@ async function retrieveOrbits(query = '*', page = 1) {
                     <h3 class="font-brutalist text-2xl mb-2">500: NETWORK_VOID</h3>
                     <p class="text-sm font-bold">SIGNAL SEVERED. CHECK CONNECTION.</p>
                 </div>
-                <span class="material-symbols-outlined text-4xl">wifi_off</span>
             </div>
         `;
     }
@@ -66,19 +65,15 @@ function renderTerminal(records) {
         ui.grid.innerHTML = `
             <div class="status-card">
                 <p class="font-brutalist text-lg">EMPTY_SET: NO MATCHES</p>
-                <span class="material-symbols-outlined">data_alert</span>
             </div>
         `;
         return;
     }
 
-    const sortedRecords = [...records].sort((a, b) => {
-        const aPinned = pinnedSatellites.includes(String(a.satelliteId));
-        const bPinned = pinnedSatellites.includes(String(b.satelliteId));
-        if (aPinned && !bPinned) return -1;
-        if (!aPinned && bPinned) return 1;
-        return 0;
-    });
+    const pinnedItems = records.filter(sat => pinnedSatellites.includes(String(sat.satelliteId)));
+    const unpinnedItems = records.filter(sat => !pinnedSatellites.includes(String(sat.satelliteId)));
+    
+    const sortedRecords = [...pinnedItems, ...unpinnedItems];
 
     sortedRecords.forEach((sat) => {
         const isPinned = pinnedSatellites.includes(String(sat.satelliteId));
@@ -86,26 +81,30 @@ function renderTerminal(records) {
         card.className = 'satellite-card animate-reveal';
         card.innerHTML = `
             <div class="satellite-card__body">
-                <div class="satellite-card__icon">
-                    <span class="material-symbols-outlined text-2xl">satellite_alt</span>
+                <div class="satellite-card__icon ${isPinned ? 'border-alert!' : ''}">
+                    <span class="material-symbols-outlined text-2xl">${isPinned ? 'bookmark' : 'satellite_alt'}</span>
                 </div>
                 <div class="satellite-card__content">
-                    <div class="flex items-center gap-4 mb-2">
+                    <div class="satellite-card__heading">
                         <h5 class="satellite-card__title">${sat.name || 'UNKNOWN'}</h5>
                         <span class="satellite-card__badge">SID_${sat.satelliteId}</span>
-                        ${isPinned ? '<span class="bg-black text-white px-2 py-0.5 text-[8px] font-bold dark:bg-white dark:text-black">PINNED</span>' : ''}
+                        ${isPinned ? '<span class="bg-alert text-white px-2 py-0.5 text-[8px] font-bold">STASHED</span>' : ''}
                     </div>
                     <div class="satellite-card__meta-row">
-                        <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">calendar_today</span>${new Date(sat.date).toLocaleDateString()}</span>
-                        <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">database</span>EPOCH: ${new Date(sat.date).getTime()}</span>
+                        <span class="satellite-card__meta-item"><span class="material-symbols-outlined">calendar_today</span>${new Date(sat.date).toLocaleDateString()}</span>
+                        <span class="satellite-card__meta-item"><span class="material-symbols-outlined">database</span>EPOCH: ${new Date(sat.date).getTime()}</span>
                     </div>
                 </div>
                 <div class="satellite-card__actions">
+                    <div class="satellite-card__status">
+                        <p class="satellite-card__status-label">STATUS</p>
+                        <p class="satellite-card__status-value">NOMINAL</p>
+                    </div>
                     <button class="tle-button" onclick="copyTLEStrings('${sat.line1}', '${sat.line2}')">
                         TLE
                     </button>
-                    <button class="pin-button ${isPinned ? 'bg-black! text-white! dark:bg-white! dark:text-black!' : ''}" onclick="togglePin('${sat.satelliteId}')">
-                        <span class="material-symbols-outlined text-xl">${isPinned ? 'star' : 'star_outline'}</span>
+                    <button class="pin-button ${isPinned ? 'is-active' : ''}" onclick="logSatelliteToTerminal('${sat.satelliteId}')">
+                        <span class="material-symbols-outlined text-lg">${isPinned ? 'bookmark' : 'bookmark_border'}</span>
                     </button>
                 </div>
             </div>
@@ -195,16 +194,16 @@ window.copyTLEStrings = async (l1, l2) => {
     }
 };
 
-window.togglePin = (id) => {
+window.logSatelliteToTerminal = (id) => {
     const satId = String(id);
     const index = pinnedSatellites.indexOf(satId);
     
     if (index > -1) {
         pinnedSatellites.splice(index, 1);
-        notify(`ARCHIVE_REMOVED`, 'success');
+        notify(`ARCHIVE_${id}_UNPINNED`, 'success');
     } else {
         pinnedSatellites.push(satId);
-        notify(`ARCHIVE_LOCKED`, 'success');
+        notify(`ARCHIVE_${id}_STASHED`, 'success');
     }
     
     localStorage.setItem('vox_pinned', JSON.stringify(pinnedSatellites));
