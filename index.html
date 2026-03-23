@@ -1,91 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
 <!-- 
-    PRISMLINK | THE ARCHITECT OF SHADOWS
-    Designed for the bold. Built for the Capstone.
-    
-    Aesthetic: Dark Mode Glassmorphism
-    Status: Milestone 1 Complete
+    SATELLITE_VOX | THE ORBITAL ARCHIVE
+    Designed for scale, not for comfort.
+    Aesthetic: NEO-BRUTALIST (V_1.02)
 -->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PrismLink | Digital Architect of Shadows</title>
-    <meta name="description" content="A premium, glassmorphic URL shortener and personal link vault dashboard. Built with the 1pt.co API.">
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>SATELLITE_VOX | ORBITAL_ARCHIVE</title>
     
-    <!-- We're using Outfit for that modern, architectural feel -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- TailWind CDN as provided by the user -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     
-    <!-- Link to the visual system -->
-    <link rel="stylesheet" href="styles.css">
+    <!-- Brutalist Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     
-    <!-- Minimalist Favicon -->
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "concrete-light": "#F2F2F2",
+                        "concrete-mid": "#D9D9D9",
+                        "concrete-dark": "#BDBDBD",
+                        "structural-black": "#000000",
+                        "warning-red": "#E63946",
+                        "warning-yellow": "#FFD60A",
+                    },
+                    fontFamily: {
+                        "brutalist": ["Archivo Black", "sans-serif"],
+                        "wide": ["Space Grotesk", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply bg-concrete-light text-structural-black font-mono uppercase tracking-tight transition-all duration-300;
+                background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            }
+        }
+        .block-shadow {
+            box-shadow: 12px 12px 0px 0px theme('colors.structural-black');
+        }
+        .block-shadow-sm {
+            box-shadow: 6px 6px 0px 0px theme('colors.structural-black');
+        }
+        .concrete-texture {
+            background-color: #e5e5e5;
+            background-image: radial-gradient(#d1d1d1 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+        .structural-grid {
+            background-size: 60px 60px;
+            background-image: linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+        }
+        .heavy-border {
+            border: 6px solid #000000;
+        }
+        
+        /* Dark Mode Overrides */
+        body.dark {
+            @apply bg-structural-black text-concrete-light;
+        }
+        body.dark .bg-white { @apply bg-concrete-dark text-black; }
+        body.dark .bg-concrete-light { @apply bg-stone-900; }
+        body.dark .block-shadow { box-shadow: 12px 12px 0px 0px theme('colors.concrete-mid'); }
+        body.dark .block-shadow-sm { box-shadow: 6px 6px 0px 0px theme('colors.concrete-mid'); }
+        body.dark .border-structural-black { @apply border-concrete-light; }
+        body.dark .heavy-border { border-color: #F2F2F2; }
+    </style>
 </head>
-<body class="dark" id="prism-body">
-    <!-- These spheres are the soul of the background -->
-    <div class="glow-sphere sphere-1"></div>
-    <div class="glow-sphere sphere-2"></div>
-
-    <header class="prism-header">
-        <div class="logo-area">
-            <h1 id="main-title">PrismLink<span class="shadow">.</span></h1>
-            <p class="tagline">The Architect of Shadows</p>
+<body class="min-h-screen structural-grid selection:bg-warning-yellow selection:text-black" id="prism-body">
+    <header class="border-b-[10px] border-structural-black bg-white p-8 sticky top-0 z-50 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div class="flex items-center gap-6">
+            <h1 class="font-brutalist text-5xl md:text-8xl tracking-tighter leading-none" id="main-title">SATELLITE_VOX</h1>
+            <div class="border-4 border-structural-black p-2 bg-warning-yellow flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm font-bold">sensors</span>
+                <span class="text-xs font-bold">ORBIT_2.04</span>
+            </div>
         </div>
-        <!-- I've wired this up in app.js as ui.toggle -->
-        <button id="theme-toggle" class="icon-btn" aria-label="Toggle Theme">
-            <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-            <svg id="sun-icon" class="hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-        </button>
+        <nav class="flex flex-wrap gap-4 font-bold">
+            <button id="theme-toggle" class="border-4 border-structural-black px-6 py-2 hover:bg-structural-black hover:text-white transition-all uppercase">
+                TOGGLE_SIGNAL
+            </button>
+            <button class="border-4 border-structural-black px-6 py-2 bg-structural-black text-white hover:bg-warning-red transition-all">EXIT_UPLINK</button>
+        </nav>
     </header>
 
-    <main class="prism-main">
-        <!-- THE FORGE: Where URLs come to be transformed -->
-        <section id="shortener-core" class="glass-panel main-forge">
-            <div class="input-group">
-                <input type="url" id="original-url-input" placeholder="Paste your cumbersome URL here..." aria-label="Original URL">
-                <input type="text" id="custom-short-input" placeholder="Custom Backhalf (Optional)" aria-label="Custom Short Code">
-                <button id="forge-btn" class="primary-btn">Forge Link</button>
+    <div class="flex flex-col lg:flex-row">
+        <!-- Sidebar Navigation -->
+        <aside class="w-full lg:w-96 border-b-[10px] lg:border-b-0 lg:border-r-[10px] border-structural-black p-10 space-y-12 bg-concrete-mid/30">
+            <div class="space-y-6">
+                <p class="text-sm font-bold bg-structural-black text-white inline-block px-2 py-1">NAVIGATION_TREE</p>
+                <nav class="space-y-4">
+                    <button class="w-full text-left block p-5 border-4 border-structural-black bg-white block-shadow-sm hover:translate-x-1 hover:-translate-y-1 transition-transform flex items-center justify-between group">
+                        <span class="font-bold">ACTIVE_TLE</span>
+                        <span class="material-symbols-outlined">satellite_alt</span>
+                    </button>
+                    <button class="w-full text-left block p-5 border-4 border-structural-black bg-white block-shadow-sm hover:translate-x-1 hover:-translate-y-1 transition-transform flex items-center justify-between group">
+                        <span class="font-bold">TRAFFIC_RAW</span>
+                        <span class="material-symbols-outlined">analytics</span>
+                    </button>
+                </nav>
             </div>
-            <!-- Notifications will appear here -->
-            <div id="status-display" class="status-msg hidden"></div>
-        </section>
-
-        <!-- THE VAULT: Your personal digital history -->
-        <section id="vault-dashboard" class="vault-section">
-            <!-- Controls for sorting and filtering your stash -->
-            <div class="vault-controls">
-                <div class="search-box">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                    <input type="text" id="vault-search" placeholder="Filter through your links..." aria-label="Search Vault">
+            
+            <div class="p-6 border-4 border-structural-black bg-warning-yellow block-shadow-sm">
+                <h3 class="font-brutalist text-xl mb-2">SYSTEM_HEALTH</h3>
+                <div class="h-4 bg-structural-black/10 border-2 border-structural-black overflow-hidden mb-4">
+                    <div class="h-full bg-structural-black w-[94%]"></div>
                 </div>
-                <div class="sort-controls">
-                    <span class="label">Sort By:</span>
-                    <select id="sort-select" aria-label="Sort Options">
-                        <option value="newest">Newest First</option>
-                        <option value="oldest">Oldest First</option>
-                        <option value="alphabetical">Alphabetical</option>
-                    </select>
+                <p class="text-xs font-bold font-mono">94% EFFICIENCY_UPLINK</p>
+            </div>
+
+            <button id="refresh-btn" class="w-full bg-warning-red text-white border-4 border-structural-black font-brutalist p-8 text-2xl block-shadow hover:shadow-none hover:translate-x-2 hover:translate-y-2 transition-all">
+                PULL_NEW_DATA
+            </button>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 p-8 md:p-16 space-y-20">
+            <section class="max-w-5xl space-y-8">
+                <div class="inline-block bg-structural-black text-white px-4 py-2 text-sm font-bold mb-4">
+                    LOCATION: /ORBITAL/ARCHIVE_01
                 </div>
-            </div>
+                <h2 class="font-brutalist text-7xl md:text-9xl leading-[0.8] tracking-tighter">
+                    DECONSTRUCTED<br/>TLE_INTERFACE.
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <p class="text-xl font-bold leading-tight">
+                        NO DECORATION. ONLY FUNCTION. SATELLITE_VOX SHREDS ORBITAL DATA INTO MINIMAL JSON STREAMS.
+                    </p>
+                    <div class="border-l-8 border-warning-red pl-6 py-2">
+                        <p class="text-sm uppercase text-gray-500">
+                            Satellite situational awareness prioritized over comfort. Primary telemetry is hot.
+                        </p>
+                    </div>
+                </div>
+            </section>
 
-            <!-- This grid is dynamically populated by app.js | renderVault() -->
-            <div id="link-vault-grid" class="vault-grid">
-                <div class="empty-state">Loading your vault from the void...</div>
-            </div>
-        </section>
-    </main>
+            <!-- Search Controller -->
+            <section class="relative">
+                <div class="bg-white border-[6px] border-structural-black p-10 block-shadow">
+                    <div class="flex items-center gap-4 mb-10 border-b-4 border-structural-black pb-6">
+                        <span class="bg-warning-yellow border-2 border-structural-black px-4 py-1 font-bold text-sm">SEARCH_01</span>
+                        <h3 class="font-brutalist text-4xl">UPLINK_CONTROLLER</h3>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                        <div class="lg:col-span-12 space-y-4">
+                            <label class="text-sm font-bold flex items-center gap-2">
+                                <span class="w-2 h-2 bg-warning-red rounded-full"></span> 
+                                SATELLITE_NAME_OR_NORAD_ID
+                            </label>
+                            <div class="flex flex-col md:flex-row gap-4">
+                                <input id="vault-search" class="w-full bg-concrete-light border-4 border-structural-black p-5 focus:ring-0 focus:bg-white text-xl font-mono uppercase" placeholder="SEARCH ARCHIVE (e.g., ISS, STARLINK...)" type="text"/>
+                                <select id="sort-select" class="bg-white border-4 border-structural-black p-5 font-bold">
+                                    <option value="name">SORT: NAME</option>
+                                    <option value="id">SORT: SID</option>
+                                    <option value="popularity">SORT: POPULARITY</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-    <footer class="prism-footer">
-        <p>&copy; 2026 PrismLink | Built with ❤️ for The Velvet Void</p>
+            <!-- Active Logs Section -->
+            <section class="space-y-10">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b-[8px] border-structural-black pb-8">
+                    <div>
+                        <h4 class="font-brutalist text-5xl">ACTIVE_LOGS</h4>
+                        <p class="text-sm font-bold text-gray-500">REAL-TIME ORBITAL RECORDS</p>
+                    </div>
+                    <div class="flex gap-4">
+                        <button class="px-8 py-3 border-4 border-structural-black font-bold hover:bg-structural-black hover:text-white transition-all">FILTER.ASC</button>
+                    </div>
+                </div>
+                
+                <!-- This grid is dynamically populated by app.js -->
+                <div id="link-vault-grid" class="grid gap-10">
+                    <div class="bg-white border-4 border-structural-black p-10 block-shadow-sm">
+                        <p class="font-brutalist text-2xl animate-pulse">BOOTING_TERMINAL_UPLINK...</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer class="bg-white border-t-[10px] border-structural-black p-16">
+        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-start gap-16">
+            <div class="space-y-8 max-w-xl">
+                <h6 class="font-brutalist text-6xl leading-none tracking-tighter">SATELLITE_VOX<br/>ARCHITECTURE</h6>
+                <div class="bg-warning-yellow p-4 border-4 border-structural-black font-bold text-sm">
+                    WARNING: UNAUTHORIZED DATA EXTRACTION WILL TRIGGER SYSTEM PURGE. ALL ORBITAL TRACKS SECURED.
+                </div>
+                <p class="text-xs font-bold text-gray-500">
+                    © 2026 SATELLITE_VOX NEO-BRUTALIST ARCHIVE. BUILT FOR SCALE.
+                </p>
+            </div>
+        </div>
     </footer>
 
-    <!-- Toasts and feedback appear here -->
-    <div id="notification-area" class="notification-area"></div>
+    <div id="notification-area" class="fixed bottom-10 right-10 z-[100] flex flex-col gap-4"></div>
 
-    <!-- The brain behind the beauty -->
     <script src="app.js"></script>
 </body>
 </html>

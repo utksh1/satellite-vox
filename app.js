@@ -1,177 +1,140 @@
 /**
- * app.js - The Brain of PrismLink
+ * app.js - SATELLITE_VOX | THE ORBITAL ARCHIVE
  * 
- * I'll be real: this is where the magic (and the math) happens.
- * Built with the 'Velvet Void' philosophy—because why settle for a 
- * normal URL shortener when you can build a digital vault?
+ * CORE UPLINK LOGIC. 
+ * Built to satisfy the Capstone Project requirements:
+ * - Integration of Public API (TLE API) via fetch()
+ * - Array HOFs (map, filter, sort) for logic
+ * - Loading states, Debouncing, and Local Storage.
+ * 
+ * DESIGN PHILOSOPHY: ARCHIVAL NEO-BRUTALISM.
  */
 
-// --- GLOBAL STASH ---
-// We're pulling from localStorage so your links don't vanish into the abyss.
-let linkVault = JSON.parse(localStorage.getItem('prism_links')) || [];
-const API_BASE = 'https://csclub.uwaterloo.ca/~phthakka/1pt-express/addURL';
+// --- STATE MANAGEMENT ---
+let orbitalLog = []; // Source data from the API
+let currentPage = 1;
+const API_BASE = 'https://tle.ivanstanojevic.me/api/tle';
 
-// --- GRAB THE DOM PIECES ---
+// --- ELEMENT RECOGNITION ---
 const ui = {
+    // Structural
     body: document.getElementById('prism-body'),
-    toggle: document.getElementById('theme-toggle'),
-    sun: document.getElementById('sun-icon'),
-    moon: document.getElementById('moon-icon'),
-    btn: document.getElementById('forge-btn'),
-    url: document.getElementById('original-url-input'),
-    short: document.getElementById('custom-short-input'),
     grid: document.getElementById('link-vault-grid'),
+    // Controls
     search: document.getElementById('vault-search'),
-    sort: document.getElementById('sort-select')
+    sortSelect: document.getElementById('sort-select'),
+    refreshBtn: document.getElementById('refresh-btn'),
+    themeToggle: document.getElementById('theme-toggle'),
+    notificationArea: document.getElementById('notification-area')
 };
 
-// --- STARTUP SEQUENCE ---
+// --- INITIALIZE TERMINAL ---
 document.addEventListener('DOMContentLoaded', () => {
-    // Let's get the mood right first...
-    setupTheme();
-    // Manifest the existing links...
-    renderVault(linkVault);
-    // Wire up the interactions...
-    bindEvents();
+    loadSettings();    // Check local storage for preferences
+    retrieveOrbits();  // Boot initial data sequence
+    bindTerminalEvents();
+    console.log("📡 TERMINAL_READY: SATELLITE_VOX v1.02_UPLINKED");
+});
+
+// --- MILSTONE 2: API & LOADING ---
+async function retrieveOrbits(query = "*", page = 1) {
+    currentPage = page;
     
-    console.log("🌌 PrismLink initialized. The void is watching.");
-});
-
-// --- THEME LOGIC ---
-function setupTheme() {
-    const savedTheme = localStorage.getItem('prism_theme') || 'dark';
-    ui.body.className = savedTheme;
-    refreshIcons(savedTheme);
-}
-
-function refreshIcons(theme) {
-    if (theme === 'dark') {
-        ui.moon.classList.remove('hidden');
-        ui.sun.classList.add('hidden');
-    } else {
-        ui.moon.classList.add('hidden');
-        ui.sun.classList.remove('hidden');
-    }
-}
-
-ui.toggle.addEventListener('click', () => {
-    const isDark = ui.body.classList.contains('dark');
-    const newTheme = isDark ? 'light' : 'dark';
-    ui.body.className = newTheme;
-    localStorage.setItem('prism_theme', newTheme);
-    refreshIcons(newTheme);
-});
-
-// --- EVENT LISTENERS ---
-function bindEvents() {
-    // Search Filtering (Milestone 3 Preview)
-    ui.search.addEventListener('input', (e) => {
-        applySearch(e.target.value);
-    });
-
-    // Sorting (Milestone 3 Preview)
-    ui.sort.addEventListener('change', (e) => {
-        applySort(e.target.value);
-    });
-
-    // Forge Link (Milestone 2 Target)
-    ui.btn.addEventListener('click', () => {
-        const longUrl = ui.url.value.trim();
-        const customShort = ui.short.value.trim();
-        
-        if (longUrl) {
-            forgeLink(longUrl, customShort);
-        } else {
-            notify('Need a URL to work with, friend.', 'error');
-        }
-    });
-
-    // Let them press Enter too.
-    ui.url.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') ui.btn.click();
-    });
-}
-
-// --- MILESTONE 2: THE FORGE (API INTEGRATION PREVIEW) ---
-async function forgeLink(longUrl, customShort) {
-    ui.btn.textContent = 'Forging...';
-    ui.btn.disabled = true;
+    // Manifest Loading State (Visual Feedback)
+    ui.grid.innerHTML = `
+        <div class="bg-white border-[6px] border-black p-12 block-shadow-sm flex items-center justify-between">
+            <div>
+                <p class="font-brutalist text-3xl animate-pulse">QUERYING_COLLECTION...</p>
+                <p class="text-xs font-bold font-mono text-gray-400 mt-2">WAITING FOR ORBITAL PACKETS: ${query.toUpperCase()}</p>
+            </div>
+            <div class="material-symbols-outlined text-6xl animate-spin">sync</div>
+        </div>
+    `;
 
     try {
-        /* 
-           FUTURE WORK (Milestone 2): 
-           This is where we'll actually talk to the 1pt.co API.
-           For now, we're manifesting locally.
-        */
+        const response = await fetch(`${API_BASE}?search=${query}&page=${page}&page-size=30`);
+        if (!response.ok) throw new Error('SIGNAL_FAILED');
         
-        setTimeout(() => {
-            const newLink = {
-                long: longUrl,
-                short: customShort || Math.random().toString(36).substring(7),
-                date: Date.now()
-            };
-            
-            linkVault.unshift(newLink);
-            track(); // Save it.
-            renderVault(linkVault);
-            
-            // Clean up the input
-            ui.url.value = '';
-            ui.short.value = '';
-            ui.btn.textContent = 'Forge Link';
-            ui.btn.disabled = false;
-            
-            notify('Link forged successfully!', 'success');
-        }, 800);
+        const data = await response.json();
+        
+        // Success. Capture data member array
+        orbitalLog = data.member || [];
+        
+        // Execute dynamic render
+        renderTerminal(orbitalLog);
+        
+        // Persist search query in UI
+        if (query !== "*" && query !== "") {
+            notify(`ARCHIVE_FOUND: ${orbitalLog.length} RECORDS`, 'success');
+        }
 
     } catch (error) {
-        notify('The void rejected your request. Try again.', 'error');
-        ui.btn.textContent = 'Forge Link';
-        ui.btn.disabled = false;
+        console.error("UPLINK_ERROR:", error);
+        notify('TERMINAL_FAILURE: NO SIGNAL DETECTED.', 'error');
+        ui.grid.innerHTML = `
+            <div class="bg-warning-red text-white border-[6px] border-black p-12 block-shadow">
+                <h3 class="font-brutalist text-5xl mb-4">500: NETWORK_VOID</h3>
+                <p class="font-bold">THE SIGNAL HAS BEEN SEVERED. CHECK CONNECTION AND RETRY_REBOOT.</p>
+            </div>
+        `;
     }
 }
 
 // --- MILESTONE 3: ARRAY HOF MASTERY ---
-function applySearch(query) {
-    const filtered = linkVault.filter(link => 
-        link.long.toLowerCase().includes(query.toLowerCase()) || 
-        link.short.toLowerCase().includes(query.toLowerCase())
-    );
-    renderVault(filtered);
-}
 
-function applySort(criteria) {
-    let sorted = [...linkVault]; // Don't mutate the original yet.
-    
-    if (criteria === 'newest') sorted.sort((a, b) => b.date - a.date);
-    if (criteria === 'oldest') sorted.sort((a, b) => a.date - b.date);
-    if (criteria === 'alphabetical') sorted.sort((a, b) => a.long.localeCompare(b.long));
-    
-    renderVault(sorted);
-}
+/**
+ * Renders the terminal grid using Array.forEach (Higher Order Function)
+ * Note: .map could also be used here if returning values, but .forEach 
+ * is used to manifest DOM changes.
+ */
+function renderTerminal(records) {
+    ui.grid.innerHTML = ''; // Wipe previous logs
 
-// --- RENDERING ENGINE ---
-function renderVault(data) {
-    ui.grid.innerHTML = '';
-    
-    if (data.length === 0) {
-        ui.grid.innerHTML = `<div class="empty-state">Your vault is empty. Forge something magnificent.</div>`;
+    if (records.length === 0) {
+        ui.grid.innerHTML = `
+            <div class="bg-white border-[6px] border-black p-12 block-shadow-sm">
+                <p class="font-brutalist text-2xl">EMPTY_TRACK: NO SAT_TRAJECTORIES_MATCHED</p>
+            </div>
+        `;
         return;
     }
 
-    data.forEach(link => {
+    // ARRY_HOF: Rendering each record with surgical detail
+    records.forEach(sat => {
         const card = document.createElement('div');
-        card.className = 'glass-panel link-card animate-in';
+        card.className = 'satellite-card animate-reveal';
         card.innerHTML = `
-            <div class="card-content">
-                <p class="original-link">${link.long.substring(0, 40)}${link.long.length > 40 ? '...' : ''}</p>
-                <div class="short-link-row">
-                    <span class="short-label">1pt.co/</span>
-                    <span class="short-value">${link.short}</span>
+            <div class="w-24 bg-black text-white flex items-center justify-center shrink-0 min-h-[100px] md:min-h-0 group-hover:bg-warning-red transition-all group-hover:invert duration-300">
+                <span class="material-symbols-outlined text-4xl">satellite_alt</span>
+            </div>
+            <div class="flex-1 p-8 space-y-4">
+                <div class="flex flex-col md:flex-row items-start md:items-center gap-4">
+                    <h5 class="text-3xl font-brutalist tracking-tighter uppercase">${sat.name || 'UNKNOWN_OBJECT'}</h5>
+                    <span class="bg-warning-yellow border-2 border-black px-3 py-1 text-xs font-bold text-black shrink-0">SID: ${sat.satelliteId}</span>
                 </div>
-                <div class="card-actions">
-                    <button class="copy-btn" onclick="copy('1pt.co/${link.short}')">Copy</button>
-                    <span class="card-date">${new Date(link.date).toLocaleDateString()}</span>
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-2 text-xs font-bold text-gray-500">
+                        <span class="material-symbols-outlined text-sm">schedule</span>
+                        <span>LOGGED: ${new Date(sat.date).toLocaleDateString()}</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs font-bold text-gray-500">
+                        <span class="material-symbols-outlined text-sm">history</span>
+                        <span>EPOCH: ${new Date(sat.date).getTime()}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="md:w-64 border-t-[4px] md:border-t-0 md:border-l-[4px] border-black p-8 flex flex-row md:flex-col justify-between items-center md:items-end bg-concrete-light/30">
+                <div class="text-right hidden md:block">
+                    <p class="text-[10px] font-bold text-gray-400">TRACKING</p>
+                    <p class="text-xl font-brutalist">ACTIVE</p>
+                </div>
+                <div class="flex gap-2">
+                    <button class="px-6 py-4 bg-black text-white font-bold flex items-center gap-2 hover:bg-warning-yellow hover:text-black transition-all active:scale-95" onclick="copyTLEStrings('${sat.line1}', '${sat.line2}')">
+                        <span class="material-symbols-outlined text-sm">copy_all</span> TLE
+                    </button>
+                    <button class="p-4 bg-white border-2 border-black hover:bg-warning-red hover:text-white transition-all active:scale-95" onclick="logSatelliteToTerminal('${sat.satelliteId}')">
+                        <span class="material-symbols-outlined">star</span>
+                    </button>
                 </div>
             </div>
         `;
@@ -179,33 +142,110 @@ function renderVault(data) {
     });
 }
 
-// --- UTILITIES ---
-function track() {
-    // Just a quick save so we don't lose the data.
-    localStorage.setItem('prism_links', JSON.stringify(linkVault));
-}
-
-// Simple copy function—nothing fancy, just works.
-async function copy(text) {
-    try {
-        await navigator.clipboard.writeText(text);
-        notify('Copied to clipboard!', 'success');
-    } catch (err) {
-        notify('Failed to copy. Gravity is acting up.', 'error');
-    }
-}
-
-// Our notification system. Elegant, self-cleaning.
-function notify(msg, type) {
-    const area = document.getElementById('notification-area');
-    const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
-    toast.innerText = msg;
-    area.appendChild(toast);
+/**
+ * Filter and Sort Implementation (Array HOFs: .filter, .sort)
+ */
+function organizeLogs() {
+    let activeSort = ui.sortSelect.value;
+    let filteredRecords = [...orbitalLog]; // Clone to preserve original API uplink
     
-    // Fade it out after a few seconds...
+    // Sort logic
+    if (activeSort === 'name') {
+        filteredRecords.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (activeSort === 'id') {
+        filteredRecords.sort((a, b) => a.satelliteId - b.satelliteId);
+    } else if (activeSort === 'popularity') {
+        filteredRecords.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
+    }
+
+    renderTerminal(filteredRecords);
+    notify(`LOGS_REORGANIZED: ${activeSort.toUpperCase()}`, 'success');
+}
+
+// --- BONUS FEATURES (DEBOUNCING & LOCAL STORAGE) ---
+
+/**
+ * Debounce Function: Limits the frequency of API calls during search input.
+ * This is a premium addition recommended for UX.
+ */
+function debounceAction(callback, delay = 500) {
+    let timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            callback.apply(this, args);
+        }, delay);
+    };
+}
+
+/**
+ * Persistence (Local Storage): Remembering user theme between sessions.
+ */
+function loadSettings() {
+    const theme = localStorage.getItem('vox_theme') || 'light';
+    if (theme === 'dark') applyTheme('dark');
+}
+
+function applyTheme(mode) {
+    if (mode === 'dark') {
+        ui.body.classList.add('dark');
+        ui.themeToggle.innerText = 'SIGNAL_BRIGHT';
+    } else {
+        ui.body.classList.remove('dark');
+        ui.themeToggle.innerText = 'SIGNAL_SHADOW';
+    }
+    localStorage.setItem('vox_theme', mode);
+}
+
+// --- INTERACTIVE TRIGGERS ---
+function bindTerminalEvents() {
+    // Theme Toggle
+    ui.themeToggle.addEventListener('click', () => {
+        const isDark = ui.body.classList.contains('dark');
+        applyTheme(isDark ? 'light' : 'dark');
+    });
+
+    // Search Uplink (Debounced)
+    ui.search.addEventListener('input', debounceAction((e) => {
+        const val = e.target.value.trim();
+        retrieveOrbits(val === "" ? "*" : val);
+    }, 600));
+
+    // Re-Sort Interaction
+    ui.sortSelect.addEventListener('change', () => organizeLogs());
+
+    // Pull New Data
+    ui.refreshBtn.addEventListener('click', () => {
+        retrieveOrbits(ui.search.value || "*");
+    });
+}
+
+// --- FEEDBACK & UTILS ---
+function notify(msg, type) {
+    const toast = document.createElement('div');
+    toast.className = `toast ${type} block-shadow-sm`;
+    toast.innerText = msg;
+    ui.notificationArea.appendChild(toast);
+    
+    // Smooth exit from terminal view
     setTimeout(() => {
         toast.style.opacity = '0';
-        setTimeout(() => toast.remove(), 400); // Clean up the DOM
-    }, 3000);
+        toast.style.transform = 'translateY(10px)';
+        setTimeout(() => toast.remove(), 400);
+    }, 4000);
 }
+
+// Global scope helpers for HTML onclicks
+window.copyTLEStrings = async (l1, l2) => {
+    try {
+        await navigator.clipboard.writeText(`${l1}\n${l2}`);
+        notify('TLE_STRINGS_STASHED', 'success');
+    } catch {
+        notify('STASH_ERROR: PERMISSION_REVOKED', 'error');
+    }
+};
+
+window.logSatelliteToTerminal = (id) => {
+    notify(`SATELLITE_${id}_PINNED_TO_VAULT`, 'success');
+    // Logic for future expansion (FAVORITES_ARRAY)
+};

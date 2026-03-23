@@ -1,38 +1,38 @@
-# PrismLink: The Architect of Shadows 🕸️
+# SATELLITE_VOX: THE ORBITAL ARCHIVE 🛰️
 
-**PrismLink** is a premium, high-fidelity URL management dashboard designed to curate, persist, and analyze digital footprints. More than a simple shortener, it is a personal vault for your most critical links, built to demonstrate technical mastery in JavaScript architecture and modern UI aesthetics.
+**SATELLITE_VOX** is a Neo-Brutalist interface into the digital debris and functional machines orbiting Earth. Built as a Capstone Project to demonstrate technical mastery in JavaScript, API integration, and high-contrast UI architecture, it leverages the **TLE (Two-Line Element) API** to query, filter, and analyze orbital data with surgical precision.
 
 ---
 
 ## 🚀 Vision & Purpose
-In an era of digital sprawl, PrismLink brings structure to chaos. It transforms cumbersome URLs into elegant, manageable entities and stores them in a persistent, searchable, and sortable vault.
+As Earth's orbit becomes increasingly congested, SATELLITE_VOX provides a raw, unfiltered terminal for space situational awareness. It moves away from "pretty" aesthetics into **Neo-Brutalism**: NO DECORATION, ONLY FUNCTION.
 
 ### 🛠️ Core Technologies
-- **Core Engine:** Vanilla JavaScript (ES6+)
-- **Styling:** Custom CSS with **Glassmorphism** and **Fluid Motion**
-- **Data Conduit:** [1pt.co API](https://csclub.uwaterloo.ca/~phthakka/1pt-express) (Using the `addURL` endpoint)
-- **Persistence:** Browser `localStorage` for infinite memory
+- **API Conduit:** [TLE API (v2.0.0)](https://tle.ivanstanojevic.me) - Sourcing daily data from CelesTrak.
+- **UI Architecture:** Neo-Brutalism (Heavy borders, Structural Black, Concrete Mids).
+- **Styling:** Custom CSS + Tailwind CSS (via CDN) for structural consistency.
+- **Engine:** Vanilla JavaScript (ES6+).
 
 ---
 
 ## 💎 Features (The Roadmap)
 
-### 🌀 Milestone 2: The Forge (API Integration)
-- **Instant Shortening:** Direct integration with the 1pt-express/addURL endpoint.
-- **Dynamic Rendering:** Real-time generation of Link Cards with "Copy to Clipboard" feedback.
-- **Loading Radiance:** A shimmering loading state for all API handshakes.
-- **Responsiveness:** A fluid layout that adapts from mobile to ultra-wide displays.
+### 🌀 Milestone 2: Orbital Uplink (API Integration)
+- **Direct Collection Query:** Integration with `GET /api/tle` for searchable collections.
+- **Dynamic Satellite Logs:** Real-time rendering of TLE records with "Copy TLE" feedback.
+- **Efficiency Metrics:** Visual indicators for orbital eccentricity and inclination.
+- **Responsive Terminal:** A brutalist layout that adapts from mobile to ultra-wide displays.
 
-### ⚙️ Milestone 3: The Vault (Intelligence)
-- **Prism Search:** Real-time link discovery using **`.filter()`** across your history.
-- **Temporal Sorting:** Arrange your vault by "Date Added" or "Title Length" using **`.sort()`**.
-- **Categorical Filtering:** Isolate links by domain (e.g., "YouTube," "GitHub") using **`.filter()`**.
-- **Atmospheric Shift:** A premium **Dark/Light Mode** toggle to match your aesthetic preference.
+### ⚙️ Milestone 3: Core Logic (Intelligence)
+- **Structural Search:** Filtering results by name or ID using **`.filter()`**.
+- **Parameter Sort:** Arrange satellites by name, ID, or "Popularity" using **`.sort()`**.
+- **Inclination Filter:** Category-based slicing for polar vs equatorial orbits using **`.filter()`**.
+- **System Purge:** A theme toggle for high-contrast "Dark Mode" and "Concrete Mode."
 
 ### ⭐ Bonus Ascensions
-- **Persistence:** Your vault survives refreshes via `localStorage`.
-- **Debounced Input:** Intelligent search that doesn't overwhelm the browser.
-- **Copy-to-Clipboard Notifications:** Elegant micro-animations for user feedback.
+- **Persistence:** Save favorite satellites to `localStorage` for offline reference.
+- **Debounced Search:** Avoid overwhelming the API on every keystroke.
+- **Infinite Archive:** Vertical scroll pagination to explore the entire TLE dataset.
 
 ---
 
@@ -42,10 +42,10 @@ In an era of digital sprawl, PrismLink brings structure to chaos. It transforms 
     git clone [your-repo-link]
     ```
 2.  **Open in Browser:**
-    Simply open `index.html` in any modern web browser.
+    Open `index.html` in any modern web browser or use a Live Server.
 3.  **Command Reality:**
-    Start shortening links and watching your vault grow.
+    Search for "ISS," "Starlink," or "Hubble" to begin the uplink.
 
 ---
 
-*“I don’t say no; I say 'how spectacularly.'”* — **The Velvet Void**
+*“Built for scale, not for comfort.”* — **SATELLITE_VOX ARHIVIST**

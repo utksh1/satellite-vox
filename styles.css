@@ -1,359 +1,93 @@
 /* 
- * styles.css - The Architect's Visual Manifest 
+ * styles.css - SATELLITE_VOX | THE STRUCTURAL ABYSS 
  * 
  * DESIGN NOTES:
- * I'm leaning heavily into Glassmorphism here. The 'blur' is key.
- * Don't touch the --blur variable unless you want the UI to feel 'cheap'.
- * The glow spheres are what make this feel like the Velvet Void.
+ * Decoration is an insult to function.
+ * Heavy borders (6px+) and block shadows (12px) define the hierarchy.
+ * The concrete texture is non-negotiable for that raw, archival feel.
  */
 
 :root {
-    /* Color Palette - Stay sleek, stay dark. */
-    --bg-dark: #0a0a0c;
-    --bg-light: #f8fafc;
-    
-    /* Glass Effect Tokens */
-    --glass-dark: rgba(255, 255, 255, 0.05);
-    --glass-dark-border: rgba(255, 255, 255, 0.1);
-    --glass-light: rgba(0, 0, 0, 0.03);
-    --glass-light-border: rgba(0, 0, 0, 0.08);
-    
-    /* Brand Accent */
-    --accent: #6366f1;
-    --accent-hover: #818cf8;
-    
-    /* Typography */
-    --text-dark: #f8fafc;
-    --text-dark-dim: #94a3b8;
-    --text-light: #1e293b;
-    --text-light-dim: #64748b;
-    
-    /* Motion & Feel */
-    --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    --blur: 12px;
+    --concrete-light: #F2F2F2;
+    --concrete-mid: #D9D9D9;
+    --concrete-dark: #BDBDBD;
+    --structural-black: #000000;
+    --warning-red: #E63946;
+    --warning-yellow: #FFD60A;
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+/* 
+ * NOTIFICATION TOASTS 
+ * Even in a brutalist world, we need to know what's happening.
+ */
+.toast {
+    @apply border-4 border-black p-6 bg-white block-shadow-sm font-bold text-sm uppercase translate-y-0 opacity-100 transition-all duration-300 pointer-events-none;
+    z-index: 1000;
 }
 
-body {
-    font-family: 'Outfit', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-    transition: var(--transition);
-    position: relative;
-    padding: 0 1rem;
+.toast.success {
+    @apply bg-warning-yellow border-black;
 }
 
-/* Theme Classes */
+.toast.error {
+    @apply bg-warning-red text-white border-black;
+}
+
+/* 
+ * MOCK SKELETON ANIMATIONS 
+ * The terminal needs to feel alive, even when the void is slow.
+ */
+.skeleton-card {
+    @apply bg-white border-4 border-black p-12 block-shadow-sm flex items-center justify-between animate-pulse;
+}
+
+/* 
+ * REVEAL ANIMATIONS 
+ */
+.animate-reveal {
+    animation: reveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes reveal {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.97);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* 
+ * THE DARK VOID 
+ */
 body.dark {
-    background: var(--bg-dark);
-    color: var(--text-dark);
+    @apply bg-zinc-950 text-white selection:bg-warning-red selection:text-white;
 }
 
-body.light {
-    background: var(--bg-light);
-    color: var(--text-light);
-}
+body.dark .bg-white { @apply bg-zinc-900 text-white; }
+body.dark .bg-concrete-mid\/30 { @apply bg-zinc-900\/50; }
+body.dark .border-black { @apply border-white; }
+body.dark .block-shadow { box-shadow: 12px 12px 0px 0px #F2F2F2; }
+body.dark .block-shadow-sm { box-shadow: 6px 6px 0px 0px #F2F2F2; }
+body.dark .satellite-card { @apply bg-zinc-900 border-white; }
+body.dark .satellite-card:hover { box-shadow: 12px 12px 0px 0px #F2F2F2; }
+body.dark .toast { @apply bg-zinc-800 text-white border-white; }
+body.dark .toast.success { @apply bg-warning-yellow text-black; }
+body.dark .toast.error { @apply bg-warning-red text-white; }
 
 /* 
- * BACKGROUND GLOW 
- * These spheres are fixed. They don't move with the scroll.
- * They give the illusion of depth in the Void.
+ * SATELLITE CARD SPECIFICS 
+ * Manifested via JS, but styled here.
  */
-.glow-sphere {
-    position: fixed;
-    border-radius: 50%;
-    filter: blur(80px); /* This high blur is non-negotiable */
-    z-index: -1;
-    opacity: 0.15;
-    pointer-events: none;
+.satellite-card {
+    @apply bg-white border-4 border-black p-0 flex flex-col md:flex-row block-shadow-sm overflow-hidden group transition-all duration-300;
 }
 
-.sphere-1 {
-    width: 400px;
-    height: 400px;
-    background: var(--accent);
-    top: -100px;
-    right: -100px;
+.satellite-card:hover {
+    @apply -translate-x-1 -translate-y-1;
+    box-shadow: 12px 12px 0px 0px #000;
 }
 
-.sphere-2 {
-    width: 300px;
-    height: 300px;
-    background: #ec4899;
-    bottom: -50px;
-    left: -50px;
-}
-
-/* 
- * HEADER & BRANDING 
- */
-.prism-header {
-    max-width: 1000px;
-    width: 100%;
-    margin: 2rem auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo-area h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-}
-
-.logo-area .shadow {
-    color: var(--accent);
-}
-
-.tagline {
-    font-size: 0.875rem;
-    font-weight: 300;
-    color: var(--text-dark-dim);
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-}
-
-/* 
- * THE FORGE (Input Area) 
- */
-.prism-main {
-    max-width: 1000px;
-    width: 100%;
-    margin: 0 auto 4rem auto;
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
-}
-
-.glass-panel {
-    background: var(--glass-dark);
-    backdrop-filter: blur(var(--blur));
-    -webkit-backdrop-filter: blur(var(--blur));
-    border: 1px solid var(--glass-dark-border);
-    border-radius: 24px;
-    padding: 2rem;
-    transition: var(--transition);
-}
-
-.main-forge {
-    padding: 3rem 2rem;
-    text-align: center;
-}
-
-.input-group {
-    display: flex;
-    gap: 1rem;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-input {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--glass-dark-border);
-    border-radius: 12px;
-    padding: 1rem 1.5rem;
-    color: inherit;
-    font-family: inherit;
-    font-size: 1rem;
-    flex: 1;
-    outline: none;
-    transition: var(--transition);
-}
-
-input:focus {
-    border-color: var(--accent);
-    background: rgba(255, 255, 255, 0.06);
-}
-
-.primary-btn {
-    background: var(--accent);
-    color: white;
-    border: none;
-    padding: 0 2rem;
-    border-radius: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
-    white-space: nowrap;
-}
-
-.primary-btn:hover {
-    background: var(--accent-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
-}
-
-/* 
- * THE VAULT (Output Dashboard) 
- */
-.vault-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-.vault-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-.search-box {
-    position: relative;
-    max-width: 400px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-}
-
-.search-box svg {
-    position: absolute;
-    left: 1.25rem;
-    color: var(--text-dark-dim);
-}
-
-.search-box input {
-    padding-left: 3.5rem;
-}
-
-.sort-controls {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-select {
-    background: var(--glass-dark);
-    border: 1px solid var(--glass-dark-border);
-    padding: 0.75rem 1rem;
-    border-radius: 12px;
-    color: inherit;
-    font-family: inherit;
-    cursor: pointer;
-}
-
-/* 
- * VAULT GRID & CARDS 
- */
-.vault-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
-}
-
-.link-card {
-    padding: 1.5rem;
-    position: relative;
-    overflow: hidden;
-    cursor: default;
-}
-
-.link-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--accent);
-    background: rgba(255, 255, 255, 0.08); /* Glow factor */
-}
-
-/* Interactive elements within the card */
-.short-link-row {
-    margin: 1rem 0;
-    font-weight: 600;
-    font-size: 1.25rem;
-    color: var(--accent);
-}
-
-.original-link {
-    font-size: 0.875rem;
-    color: var(--text-dark-dim);
-    word-break: break-all;
-}
-
-.card-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 1rem;
-}
-
-.copy-btn {
-    background: var(--glass-dark-border);
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    color: var(--text-dark);
-    font-size: 0.75rem;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.copy-btn:hover {
-    background: var(--accent);
-}
-
-.card-date {
-    font-size: 0.75rem;
-    color: var(--text-dark-dim);
-}
-
-/* 
- * FOOTER & UTILITY 
- */
-.prism-footer {
-    text-align: center;
-    padding: 4rem 2rem 2rem 2rem;
-    color: var(--text-dark-dim);
-    font-size: 0.875rem;
-}
-
-.hidden { display: none; }
-
-/* 
- * LIGHT MODE OVERRIDES 
- * Gently shifting the void for the sun-seekers.
- */
-body.light .glass-panel {
-    background: var(--glass-light);
-    border-color: var(--glass-light-border);
-}
-
-body.light input, body.light select {
-    background: white;
-    border-color: var(--glass-light-border);
-    color: var(--text-light);
-}
-
-body.light .tagline, body.light .text-dark-dim {
-    color: var(--text-light-dim);
-}
-
-body.light .copy-btn {
-    background: var(--glass-light-border);
-    color: var(--text-light);
-}
-
-/* 
- * RESPONSIVENESS 
- * Keep it beautiful on all glass surfaces.
- */
-@media (max-width: 768px) {
-    .input-group {
-        flex-direction: column;
-    }
-    .primary-btn {
-        padding: 1.25rem;
-    }
-    .vault-controls {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-}
-
-/* Made with ❤️ and caffeine for The Velvet Void. */
+/* Built for scale. Crafted for SATELLITE_VOX. */
