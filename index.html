@@ -19,86 +19,109 @@
   <body>
     <div class="page-shell">
       <header class="hero">
-        <p class="eyebrow">Milestone 1 Setup</p>
-        <h1>SatelliteVox</h1>
-        <p class="hero-copy">
-          Explore planets, moons, asteroids, and other celestial bodies from the
-          solar system through a clean, responsive interface powered by live API data.
-        </p>
+        <div class="hero-copy-block">
+          <figure class="hero-visual" aria-hidden="true">
+            <img src="./assets/hero-orbit.svg" alt="" />
+          </figure>
+
+          <div class="hero-layout">
+            <div>
+              <p class="eyebrow">Solar System Atlas</p>
+              <h1>SatelliteVox</h1>
+              <p class="hero-copy">
+                Explore planets, moons, dwarf planets, and asteroids through a quieter,
+                cleaner catalog built for scanning, comparison, and discovery.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="hero-panel" aria-label="Catalog overview">
+          <p class="panel-kicker">Catalog Snapshot</p>
+          <div class="hero-stats">
+            <div>
+              <span id="stat-total" class="stat-value">0</span>
+              <span class="stat-label">Bodies</span>
+            </div>
+            <div>
+              <span id="stat-planets" class="stat-value">0</span>
+              <span class="stat-label">Planets</span>
+            </div>
+            <div>
+              <span id="stat-moons" class="stat-value">0</span>
+              <span class="stat-label">Moons</span>
+            </div>
+          </div>
+          <p id="catalog-note" class="hero-note">Loading catalog details.</p>
+        </aside>
       </header>
 
-      <main>
-        <section class="controls" aria-label="Search, filter, and sort controls">
-          <div class="control-group">
-            <label for="search">Search</label>
-            <input
-              id="search"
-              type="search"
-              placeholder="Search celestial bodies"
-              disabled
-            />
+      <main class="workspace">
+        <aside class="controls" aria-label="Search, filter, and sort controls">
+          <div class="controls-intro">
+            <p class="panel-kicker">Explorer Controls</p>
+            <h2>Filter the catalog</h2>
+            <p>
+              Search by name, narrow by body type, and sort the collection by the
+              physical traits that matter most.
+            </p>
           </div>
 
-          <div class="control-row">
+          <div class="control-stack">
             <div class="control-group">
-              <label for="filter">Filter by type</label>
-              <select id="filter" disabled>
-                <option>All bodies</option>
-                <option>Planet</option>
-                <option>Moon</option>
-                <option>Asteroid</option>
-                <option>Dwarf planet</option>
+              <label for="search">Search</label>
+              <input id="search" type="search" placeholder="Search celestial bodies" />
+            </div>
+
+            <div class="control-group">
+              <label for="filter">Body type</label>
+              <select id="filter">
+                <option value="all">All bodies</option>
+                <option value="Planet">Planet</option>
+                <option value="Moon">Moon</option>
+                <option value="Dwarf Planet">Dwarf planet</option>
+                <option value="Asteroid">Asteroid</option>
               </select>
             </div>
 
             <div class="control-group">
               <label for="sort">Sort by</label>
-              <select id="sort" disabled>
-                <option>Name</option>
-                <option>Gravity</option>
-                <option>Density</option>
+              <select id="sort">
+                <option value="name">Name</option>
+                <option value="gravity">Gravity</option>
+                <option value="density">Density</option>
+                <option value="radius">Mean radius</option>
               </select>
             </div>
           </div>
-        </section>
+
+          <dl class="catalog-facts">
+            <div>
+              <dt>Largest body</dt>
+              <dd id="largest-body">Loading...</dd>
+            </div>
+            <div>
+              <dt>Strongest gravity</dt>
+              <dd id="strongest-gravity">Loading...</dd>
+            </div>
+            <div>
+              <dt>Catalog focus</dt>
+              <dd>Planets, major moons, dwarf planets, and key asteroids</dd>
+            </div>
+          </dl>
+        </aside>
 
         <section class="results" aria-labelledby="results-heading">
-          <div class="section-heading">
-            <h2 id="results-heading">Planned Results Grid</h2>
-            <button class="theme-toggle" type="button" disabled>Theme Toggle</button>
+          <div class="results-header">
+            <div>
+              <p class="panel-kicker">Catalog Results</p>
+              <h2 id="results-heading">Celestial Bodies</h2>
+            </div>
+            <p id="results-summary" class="results-summary">Loading solar system data.</p>
           </div>
 
-          <div class="card-grid">
-            <article class="body-card">
-              <p class="card-type">Planet</p>
-              <h3>Earth</h3>
-              <ul>
-                <li>Gravity: 9.8 m/s²</li>
-                <li>Density: 5.51 g/cm³</li>
-                <li>Temperature: 288 K</li>
-                <li>Moons: 1</li>
-              </ul>
-              <div class="card-actions">
-                <button type="button" disabled>View Details</button>
-                <button type="button" disabled>Favorite</button>
-              </div>
-            </article>
-
-            <article class="body-card body-card--placeholder">
-              <p class="card-type">Moon</p>
-              <h3>Europa</h3>
-              <ul>
-                <li>Gravity: Planned dynamic field</li>
-                <li>Density: Planned dynamic field</li>
-                <li>Temperature: Planned dynamic field</li>
-                <li>Moons: Planned dynamic field</li>
-              </ul>
-              <div class="card-actions">
-                <button type="button" disabled>View Details</button>
-                <button type="button" disabled>Favorite</button>
-              </div>
-            </article>
-          </div>
+          <div id="status-region" class="status-region" aria-live="polite"></div>
+          <div id="card-grid" class="card-grid" aria-live="polite"></div>
         </section>
       </main>
     </div>
