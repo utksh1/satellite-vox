@@ -1,71 +1,70 @@
 # SatelliteVox
 
-SatelliteVox is a responsive frontend web application for exploring planets and other celestial bodies in our solar system. The app will use live data from the Solar System OpenData API and present it through a clean, card-based interface with search, filtering, sorting, and saved favorites.
+SatelliteVox is a responsive frontend web application for exploring planets and other celestial bodies from our solar system. The app uses a structured solar system data set and presents it through a clean, card-based interface with search, filtering, and sorting.
 
 ## Purpose
 
 This project is being built to practice core frontend development skills using HTML, CSS, and vanilla JavaScript. It is designed to demonstrate:
 
-- API integration with asynchronous JavaScript
+- API-style data integration with asynchronous JavaScript
 - Dynamic DOM rendering
 - Array methods for searching, filtering, and sorting data
 - Responsive UI design
 - Clean project structure and maintainable frontend code
 
-## Selected API
+## Selected Data Source
 
-- API Name: Solar System OpenData API
-- Base Endpoint: `https://api.le-systeme-solaire.net/rest/bodies/`
-- Documentation: `https://api.le-systeme-solaire.net/`
+- Source Type: Local JSON catalog fetched with `fetch()`
+- File Path: `assets/bodies.json`
+- Reason: Supports a broader solar system body catalog without requiring API authentication
 
-### Planned Data Fields
+### Data Fields Used
 
-The application will use relevant fields from the API response, including:
+The application uses fields such as:
 
 - `englishName`
+- `bodyType`
 - `gravity`
 - `density`
 - `meanRadius`
 - `avgTemp`
-- `bodyType`
 - `isPlanet`
-- `moons`
+- `moonsCount`
 
-## Planned Features
+## Current Features
 
-- Browse planets and celestial bodies from the solar system
+- Browse planets, moons, dwarf planets, and asteroids
 - Search celestial bodies by name
-- Filter results by body type such as planet, moon, asteroid, or dwarf planet
-- Sort objects alphabetically or by gravity and density
+- Filter results by body type
+- Sort objects by name, gravity, density, or mean radius
 - Display results in a responsive card grid
-- Show more details in a modal view
-- Bookmark favorite celestial bodies
-- Toggle between dark mode and light mode
+- Show loading, empty, and error states
 
 ## UI Direction
 
-The interface will follow a handcrafted, minimal space-inspired design.
+The interface follows a handcrafted, minimal design.
 
 ### Visual Goals
 
-- Dark navy or charcoal background
+- Light neutral background
 - Clean card-based layout
 - Minimal accent color usage
 - Comfortable spacing and readable typography
-- Subtle hover states and transitions
+- Subtle transitions and restrained styling
 
 ## Technologies Used
 
 - HTML5
 - CSS3
 - Vanilla JavaScript
-- Solar System OpenData API
+- Local JSON data
 
 ## Project Structure
 
 ```text
 satellite-vox/
 ├── assets/
+│   └── bodies.json
 ├── index.html
 ├── style.css
 ├── script.js
@@ -77,25 +76,24 @@ satellite-vox/
 ### Milestone 1 - Planning and Repository Setup
 
 - Finalize project concept
-- Select the public API
+- Select the public API or data source
 - Prepare repository structure
 - Add initial HTML, CSS, and JavaScript files
 - Write project documentation in the README
 
 ### Milestone 2 - API Integration
 
-- Fetch celestial body data from the API
+- Fetch celestial body data from a structured source
 - Normalize and inspect incoming data
-- Render initial result cards dynamically
+- Render result cards dynamically
 - Add basic error handling and loading states
 
 ### Milestone 3 - Interactive Features
 
-- Implement search functionality
-- Add filter and sort controls
-- Build the details modal
-- Add favorites/bookmark functionality
-- Add theme toggle support
+- Add richer object details and contextual explanations
+- Add saved views or favorite objects if required by the course scope
+- Improve filtering and sorting options
+- Refine UI interactions and transitions
 
 ### Milestone 4 - Polish, Documentation, and Deployment
 
@@ -120,48 +118,21 @@ satellite-vox/
 
 3. Open the project in your code editor.
 
-4. Run the project by opening `index.html` in a browser.
+4. Run the project with a local server so `fetch()` can load `assets/bodies.json`.
 
-## Repository Setup Workflow
+   Example with Python:
 
-```bash
-git add .
-git commit -m "initial repository setup"
+   ```bash
+   python3 -m http.server 8000
+   ```
 
-git add .
-git commit -m "add project README and planning"
+5. Open `http://localhost:8000` in your browser.
 
-git add .
-git commit -m "create base HTML structure"
+## Milestone 2 Notes
 
-git add .
-git commit -m "add CSS layout file"
-
-git add .
-git commit -m "setup project folder structure"
-```
-
-## Recommended Commit Timeline
-
-If you want your milestone progress to reflect a staged development timeline, use commit messages like:
-
-1. `initial repository setup`
-2. `add project README and planning`
-3. `create base HTML structure`
-4. `add CSS layout file`
-5. `setup project folder structure`
-
-Optional date adjustment example:
-
-```bash
-git commit --amend --date="2026-03-18 19:30:00"
-```
-
-For multiple commits:
-
-```bash
-git rebase -i HEAD~5
-```
+- Milestone 2 now uses a local JSON catalog so the project can stay aligned with the solar system body brief without requiring an external API key.
+- The app includes loading, empty, and error states for data-driven rendering.
+- The current catalog includes planets, major moons, dwarf planets, and a few asteroids.
 
 ## Development Best Practices
 
@@ -169,16 +140,6 @@ git rebase -i HEAD~5
 - Use clear variable and function names
 - Separate data logic, rendering logic, and event handling
 - Avoid repeated code by extracting reusable functions
-- Add basic error handling for API operations
+- Add basic error handling for data operations
 - Test layout across mobile, tablet, and desktop sizes
 - Keep documentation updated as the project evolves
-
-## Milestone 1 Outcome
-
-After this milestone, the repository should contain:
-
-- A finalized project concept
-- A selected public API
-- A clean starter file structure
-- A documented development plan
-- A solid base for Milestone 2 implementation
