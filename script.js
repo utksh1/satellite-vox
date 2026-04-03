@@ -1,5 +1,7 @@
 const DATA_SOURCE_URL = "./assets/bodies.json";
 const SUPPORTED_BODY_TYPES = ["Planet", "Moon", "Dwarf Planet", "Asteroid"];
+const FAVORITES_STORAGE_KEY = "satellite-vox-favorites";
+const THEME_STORAGE_KEY = "satellite-vox-theme";
 
 const elements = {
   searchInput: document.querySelector("#search"),
@@ -8,17 +10,22 @@ const elements = {
   statusRegion: document.querySelector("#status-region"),
   cardGrid: document.querySelector("#card-grid"),
   resultsSummary: document.querySelector("#results-summary"),
+  favoritesSummary: document.querySelector("#favorites-summary"),
   statTotal: document.querySelector("#stat-total"),
   statPlanets: document.querySelector("#stat-planets"),
   statMoons: document.querySelector("#stat-moons"),
+  statFavorites: document.querySelector("#stat-favorites"),
   catalogNote: document.querySelector("#catalog-note"),
   largestBody: document.querySelector("#largest-body"),
   strongestGravity: document.querySelector("#strongest-gravity"),
+  themeToggle: document.querySelector("#theme-toggle"),
 };
 
 const appState = {
   bodiesData: [],
   filteredBodies: [],
+  favoriteIds: getFavorites(),
+  theme: getStoredTheme(),
   hasLoadedData: false,
 };
 
@@ -55,43 +62,25 @@ function prepareBodies(bodies) {
     .sort((firstBody, secondBody) => firstBody.name.localeCompare(secondBody.name));
 }
 
-function applyFiltersAndSort() {
-  if (!appState.hasLoadedData) {
-    return;
-  }
-
-  const searchTerm = elements.searchInput.value.trim().toLowerCase();
-  const selectedType = elements.filterSelect.value;
-  const sortBy = elements.sortSelect.value;
-
-  const filteredBodies = appState.bodiesData
-    .filter((body) => {
-      const matchesSearch = body.name.toLowerCase().includes(searchTerm);
-      const matchesType = selectedType === "all" || body.bodyType === selectedType;
-      return matchesSearch && matchesType;
-    })
-    .sort((firstBody, secondBody) => sortBodies(firstBody, secondBody, sortBy));
-
-  appState.filteredBodies = filteredBodies;
-  renderBodies(filteredBodies);
+function searchBodies(bodies, searchTerm) {
+  return bodies.filter((body) => body.name.toLowerCase().includes(searchTerm.toLowerCase()));
 }
 
-function sortBodies(firstBody, secondBody, sortBy) {
+function filterBodies(bodies, selectedType) {
+  return bodies.filter((body) => selectedType === "all" || body.bodyType === selectedType);
+}
+
+function sortBodies(bodies, sortBy) {
+  return [...bodies].sort((firstBody, secondBody) => compareBodies(firstBody, secondBody, sortBy));
+}
+
+function compareBodies(firstBody, secondBody, sortBy) {
   if (sortBy === "gravity") {
-    return compareMetric(secondBody.gravityValue, firstBody.gravityValue, firstBody.name, secondBody.name);
+    return compareMetric(firstBody.gravityValue, secondBody.gravityValue, firstBody.name, secondBody.name);
   }
 
   if (sortBy === "density") {
-    return compareMetric(secondBody.densityValue, firstBody.densityValue, firstBody.name, secondBody.name);
-  }
-
-  if (sortBy === "radius") {
-    return compareMetric(
-      secondBody.meanRadiusValue,
-      firstBody.meanRadiusValue,
-      firstBody.name,
-      secondBody.name
-    );
+    return compareMetric(firstBody.densityValue, secondBody.densityValue, firstBody.name, secondBody.name);
   }
 
   return firstBody.name.localeCompare(secondBody.name);
@@ -100,6 +89,23 @@ function sortBodies(firstBody, secondBody, sortBy) {
 function compareMetric(firstValue, secondValue, firstName, secondName) {
   const metricDifference = firstValue - secondValue;
   return metricDifference !== 0 ? metricDifference : firstName.localeCompare(secondName);
+}
+
+function applyFiltersAndSort() {
+  if (!appState.hasLoadedData) {
+    return;
+  }
+
+  const searchTerm = elements.searchInput.value.trim();
+  const selectedType = elements.filterSelect.value;
+  const sortBy = elements.sortSelect.value;
+
+  const searchedBodies = searchBodies(appState.bodiesData, searchTerm);
+  const filteredBodies = filterBodies(searchedBodies, selectedType);
+  const sortedBodies = sortBodies(filteredBodies, sortBy);
+
+  appState.filteredBodies = sortedBodies;
+  renderBodies(sortedBodies);
 }
 
 function formatMetric(value, unit) {
@@ -126,6 +132,7 @@ function setCatalogStats(bodies) {
   elements.catalogNote.textContent = `Catalog spans ${new Set(bodies.map((body) => body.bodyType)).size} body groups for quick comparison.`;
   elements.largestBody.textContent = `${largestBody.name} · ${largestBody.meanRadius}`;
   elements.strongestGravity.textContent = `${strongestGravity.name} · ${strongestGravity.gravity}`;
+  updateFavoritesUI();
 }
 
 // Section 3: Rendering
@@ -143,11 +150,21 @@ function renderBodies(bodies) {
       (body, index) => `
         <article class="body-card" data-body-id="${body.id}" style="--card-index:${index}">
           <div class="card-top">
-            <div>
+            <div class="card-heading">
               <p class="card-type">${body.bodyType}</p>
               <h3>${body.name}</h3>
+              <p class="planet-flag">${body.isPlanet ? "Planetary body" : "Solar system object"}</p>
             </div>
-            <p class="planet-flag">${body.isPlanet ? "Planetary body" : "Solar system object"}</p>
+            <button
+              class="favorite-button ${isFavorite(body.id) ? "is-active" : ""}"
+              type="button"
+              data-favorite-id="${body.id}"
+              aria-pressed="${isFavorite(body.id)}"
+              aria-label="${isFavorite(body.id) ? "Remove from favorites" : "Add to favorites"}"
+              title="${isFavorite(body.id) ? "Remove from favorites" : "Add to favorites"}"
+            >
+              ${isFavorite(body.id) ? "★" : "☆"}
+            </button>
           </div>
           <dl class="metrics-grid">
             <div class="metric">
@@ -188,6 +205,7 @@ function renderBodies(bodies) {
 
   elements.cardGrid.innerHTML = cardsMarkup;
   updateResultsSummary(bodies.length);
+  updateFavoritesUI();
 }
 
 function renderSkeletonCards(count = 8) {
@@ -254,8 +272,57 @@ function getFriendlyErrorMessage() {
   return "Something went wrong while loading the celestial body catalog. Start the project with a local server and try again.";
 }
 
-// Section 5: Event listeners
+// Section 5: UI features
+function getFavorites() {
+  const storedFavorites = window.localStorage.getItem(FAVORITES_STORAGE_KEY);
+  return storedFavorites ? JSON.parse(storedFavorites) : [];
+}
+
+function saveFavorites() {
+  window.localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(appState.favoriteIds));
+}
+
+function isFavorite(id) {
+  return appState.favoriteIds.find((favoriteId) => favoriteId === id) !== undefined;
+}
+
+function toggleFavorite(id) {
+  appState.favoriteIds = isFavorite(id)
+    ? appState.favoriteIds.filter((favoriteId) => favoriteId !== id)
+    : [...appState.favoriteIds, id];
+
+  saveFavorites();
+  updateFavoritesUI();
+  renderBodies(appState.filteredBodies);
+}
+
+function updateFavoritesUI() {
+  const favoriteCount = appState.favoriteIds.length;
+  elements.statFavorites.textContent = String(favoriteCount);
+  elements.favoritesSummary.textContent = `${favoriteCount} favorites saved.`;
+}
+
+function getStoredTheme() {
+  return window.localStorage.getItem(THEME_STORAGE_KEY) ?? "light";
+}
+
+function applyTheme(theme) {
+  appState.theme = theme;
+  document.body.classList.toggle("dark-theme", theme === "dark");
+  elements.themeToggle.textContent = theme === "dark" ? "Switch to light mode" : "Switch to dark mode";
+  elements.themeToggle.setAttribute("aria-pressed", String(theme === "dark"));
+}
+
+function toggleTheme() {
+  const nextTheme = appState.theme === "dark" ? "light" : "dark";
+  applyTheme(nextTheme);
+  window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+}
+
+// Section 6: Events
 async function initializeApp() {
+  applyTheme(appState.theme);
+  updateFavoritesUI();
   await loadBodies();
 }
 
@@ -273,10 +340,22 @@ async function loadBodies() {
   }
 }
 
+function handleCardGridClick(event) {
+  const favoriteButton = event.target.closest("[data-favorite-id]");
+
+  if (!favoriteButton) {
+    return;
+  }
+
+  toggleFavorite(favoriteButton.dataset.favoriteId);
+}
+
 function bindEvents() {
   elements.searchInput.addEventListener("input", applyFiltersAndSort);
   elements.filterSelect.addEventListener("change", applyFiltersAndSort);
   elements.sortSelect.addEventListener("change", applyFiltersAndSort);
+  elements.themeToggle.addEventListener("click", toggleTheme);
+  elements.cardGrid.addEventListener("click", handleCardGridClick);
 }
 
 bindEvents();

@@ -51,6 +51,10 @@
               <span id="stat-moons" class="stat-value">0</span>
               <span class="stat-label">Moons</span>
             </div>
+            <div>
+              <span id="stat-favorites" class="stat-value">0</span>
+              <span class="stat-label">Favorites</span>
+            </div>
           </div>
           <p id="catalog-note" class="hero-note">Loading catalog details.</p>
         </aside>
@@ -90,9 +94,15 @@
                 <option value="name">Name</option>
                 <option value="gravity">Gravity</option>
                 <option value="density">Density</option>
-                <option value="radius">Mean radius</option>
               </select>
             </div>
+          </div>
+
+          <div class="theme-block">
+            <p class="panel-kicker">Display</p>
+            <button id="theme-toggle" class="theme-toggle" type="button" aria-pressed="false">
+              Switch to dark mode
+            </button>
           </div>
 
           <dl class="catalog-facts">
@@ -117,7 +127,10 @@
               <p class="panel-kicker">Catalog Results</p>
               <h2 id="results-heading">Celestial Bodies</h2>
             </div>
-            <p id="results-summary" class="results-summary">Loading solar system data.</p>
+            <div class="results-meta">
+              <p id="results-summary" class="results-summary">Loading solar system data.</p>
+              <p id="favorites-summary" class="results-summary">0 favorites saved.</p>
+            </div>
           </div>
 
           <div id="status-region" class="status-region" aria-live="polite"></div>
