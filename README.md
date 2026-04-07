@@ -36,7 +36,9 @@ The application uses fields such as:
 - Browse planets, moons, dwarf planets, and asteroids
 - Search celestial bodies by name
 - Filter results by body type
-- Sort objects by name, gravity, density, or mean radius
+- Sort objects by name, gravity, or density
+- Save favorite bodies using `localStorage`
+- Toggle between light and dark themes
 - Display results in a responsive card grid
 - Show loading, empty, and error states
 
@@ -90,10 +92,12 @@ satellite-vox/
 
 ### Milestone 3 - Interactive Features
 
-- Add richer object details and contextual explanations
-- Add saved views or favorite objects if required by the course scope
-- Improve filtering and sorting options
-- Refine UI interactions and transitions
+- Implement search with `filter()`
+- Add body type filtering
+- Add sorting by name, gravity, and density
+- Add favorites with `localStorage`
+- Add persistent dark and light theme switching
+- Refine card interactions and transitions
 
 ### Milestone 4 - Polish, Documentation, and Deployment
 
@@ -128,11 +132,12 @@ satellite-vox/
 
 5. Open `http://localhost:8000` in your browser.
 
-## Milestone 2 Notes
+## Milestone 3 Notes
 
-- Milestone 2 now uses a local JSON catalog so the project can stay aligned with the solar system body brief without requiring an external API key.
-- The app includes loading, empty, and error states for data-driven rendering.
-- The current catalog includes planets, major moons, dwarf planets, and a few asteroids.
+- SatelliteVox uses a local JSON catalog fetched with `fetch()` because the project moved away from the original authenticated API requirement.
+- Search, filtering, and sorting are implemented with array higher-order functions only.
+- Favorites and theme preferences are stored locally in the browser with `localStorage`.
+- The current catalog includes planets, major moons, dwarf planets, and asteroids.
 
 ## Development Best Practices
 
