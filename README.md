@@ -1,102 +1,108 @@
 # SatelliteVox
 
-SatelliteVox is a responsive frontend web application for exploring solar system bodies through a searchable, filterable, card-based interface. The final version uses a local JSON catalog loaded with `fetch()` so the project stays stable in the browser without external API authentication.
-
-## Project Description
-
-The app lets users browse planets, moons, dwarf planets, and asteroids, compare key physical properties, save favorites, and switch between light and dark themes. It was built as a vanilla JavaScript project focused on dynamic rendering, array higher-order functions, and responsive UI design.
+SatelliteVox is a responsive frontend web application for exploring planets and other celestial bodies in our solar system. The app will use live data from the Solar System OpenData API and present it through a clean, card-based interface with search, filtering, sorting, and saved favorites.
 
 ## Purpose
 
-This project was created to demonstrate:
+This project is being built to practice core frontend development skills using HTML, CSS, and vanilla JavaScript. It is designed to demonstrate:
 
-- asynchronous data loading with `fetch()` and `async/await`
-- dynamic DOM rendering with JavaScript
-- search, filtering, and sorting using array higher-order functions
-- client-side state with `localStorage`
-- responsive layout and interaction design with HTML and CSS
+- API integration with asynchronous JavaScript
+- Dynamic DOM rendering
+- Array methods for searching, filtering, and sorting data
+- Responsive UI design
+- Clean project structure and maintainable frontend code
 
-## Final Data Source
+## Selected API
 
-The original project plan targeted the Solar System OpenData API:
+- API Name: Solar System OpenData API
+- Base Endpoint: `https://api.le-systeme-solaire.net/rest/bodies/`
+- Documentation: `https://api.le-systeme-solaire.net/`
 
-- `https://api.le-systeme-solaire.net/rest/bodies/`
+### Planned Data Fields
 
-The final submission uses a local structured catalog instead:
+The application will use relevant fields from the API response, including:
 
-- Source type: local JSON fetched at runtime
-- File: `assets/bodies.json`
+- `englishName`
+- `gravity`
+- `density`
+- `meanRadius`
+- `avgTemp`
+- `bodyType`
+- `isPlanet`
+- `moons`
 
-This change was made because the live endpoint required authentication during development, while the project brief still needed a solar system body catalog that worked reliably in a static frontend deployment.
+## Planned Features
 
-## Features
+- Browse planets and celestial bodies from the solar system
+- Search celestial bodies by name
+- Filter results by body type such as planet, moon, asteroid, or dwarf planet
+- Sort objects alphabetically or by gravity and density
+- Display results in a responsive card grid
+- Show more details in a modal view
+- Bookmark favorite celestial bodies
+- Toggle between dark mode and light mode
 
-- dynamic body rendering from a fetched JSON data source
-- search by celestial body name
-- filter by body type
-- sort by name, gravity, or density
-- favorites system using `localStorage`
-- light and dark theme toggle
-- loading, empty, and error UI states
-- responsive layout for desktop, tablet, and mobile
+## UI Direction
+
+The interface will follow a handcrafted, minimal space-inspired design.
+
+### Visual Goals
+
+- Dark navy or charcoal background
+- Clean card-based layout
+- Minimal accent color usage
+- Comfortable spacing and readable typography
+- Subtle hover states and transitions
 
 ## Technologies Used
 
 - HTML5
 - CSS3
 - Vanilla JavaScript
-- Local JSON data
+- Solar System OpenData API
 
 ## Project Structure
 
 ```text
 satellite-vox/
-├── .github/
-│   └── workflows/
-│       └── deploy-pages.yml
 ├── assets/
-│   ├── bodies.json
-│   ├── hero-orbit.svg
-│   └── screenshots/
-│       ├── dark-mode.png
-│       ├── filter.png
-│       ├── home.png
-│       ├── search.png
-│       └── sorting.png
 ├── index.html
 ├── style.css
 ├── script.js
 └── README.md
 ```
 
-## Milestones
+## Project Milestones
 
-### Milestone 1 - Planning and Setup
+### Milestone 1 - Planning and Repository Setup
 
-- finalized the project concept
-- defined the repository structure
-- documented the planned features and milestone scope
+- Finalize project concept
+- Select the public API
+- Prepare repository structure
+- Add initial HTML, CSS, and JavaScript files
+- Write project documentation in the README
 
-### Milestone 2 - Data Integration
+### Milestone 2 - API Integration
 
-- connected the app to a structured solar system data source
-- rendered the catalog dynamically
-- added loading and error handling states
+- Fetch celestial body data from the API
+- Normalize and inspect incoming data
+- Render initial result cards dynamically
+- Add basic error handling and loading states
 
 ### Milestone 3 - Interactive Features
 
-- added search with `filter()`
-- added body type filtering
-- added sorting with `sort()`
-- added favorites with `localStorage`
-- added persistent theme switching
+- Implement search functionality
+- Add filter and sort controls
+- Build the details modal
+- Add favorites/bookmark functionality
+- Add theme toggle support
 
-### Milestone 4 - Documentation, Deployment, and Submission
+### Milestone 4 - Polish, Documentation, and Deployment
 
-- cleaned and reviewed the codebase
-- refined UI spacing and interaction details
-- finalized project documentation
-- added deployment workflow and screenshots
+- Improve accessibility and responsiveness
+- Refine UI states and interactions
+- Finalize documentation
+- Deploy the project
 
 ## Setup Instructions
 
@@ -112,79 +118,67 @@ satellite-vox/
    cd satellite-vox
    ```
 
-3. Start a local server so the JSON catalog can be loaded with `fetch()`:
+3. Open the project in your code editor.
 
-   ```bash
-   python3 -m http.server 8000
-   ```
+4. Run the project by opening `index.html` in a browser.
 
-4. Open the app in your browser:
+## Repository Setup Workflow
 
-   ```text
-   http://localhost:8000
-   ```
+```bash
+git add .
+git commit -m "initial repository setup"
 
-## Deployment
+git add .
+git commit -m "add project README and planning"
 
-SatelliteVox is prepared for static deployment.
+git add .
+git commit -m "create base HTML structure"
 
-### GitHub Pages
+git add .
+git commit -m "add CSS layout file"
 
-The repository includes a GitHub Pages workflow in `.github/workflows/deploy-pages.yml`.
+git add .
+git commit -m "setup project folder structure"
+```
 
-To publish:
+## Recommended Commit Timeline
 
-1. Open the repository on GitHub.
-2. Go to `Settings` -> `Pages`.
-3. Set the source to `GitHub Actions`.
-4. Push to the `main` branch.
+If you want your milestone progress to reflect a staged development timeline, use commit messages like:
 
-Expected site URL:
+1. `initial repository setup`
+2. `add project README and planning`
+3. `create base HTML structure`
+4. `add CSS layout file`
+5. `setup project folder structure`
 
-- `https://utksh1.github.io/satellite-vox/`
+Optional date adjustment example:
 
-### Other Static Hosts
+```bash
+git commit --amend --date="2026-03-18 19:30:00"
+```
 
-This project can also be deployed to:
+For multiple commits:
 
-- Netlify
-- Vercel
+```bash
+git rebase -i HEAD~5
+```
 
-Because the app is static, deployment only needs the repository files with no server-side configuration.
+## Development Best Practices
 
-## Screenshots
+- Keep commits small and meaningful
+- Use clear variable and function names
+- Separate data logic, rendering logic, and event handling
+- Avoid repeated code by extracting reusable functions
+- Add basic error handling for API operations
+- Test layout across mobile, tablet, and desktop sizes
+- Keep documentation updated as the project evolves
 
-### Home Page
+## Milestone 1 Outcome
 
-![SatelliteVox home page](./assets/screenshots/home.png)
+After this milestone, the repository should contain:
 
-### Search Example
-
-![SatelliteVox search example](./assets/screenshots/search.png)
-
-### Filter Example
-
-![SatelliteVox filter example](./assets/screenshots/filter.png)
-
-### Sorting Example
-
-![SatelliteVox sorting example](./assets/screenshots/sorting.png)
-
-### Dark Mode
-
-![SatelliteVox dark mode](./assets/screenshots/dark-mode.png)
-
-## Final Review Checklist
-
-- project runs from a local static server
-- dynamic data rendering works from `assets/bodies.json`
-- search, filtering, and sorting use array higher-order functions
-- favorites and theme preference persist with `localStorage`
-- layout responds across desktop, tablet, and mobile sizes
-- README documentation matches the submitted project
-
-## Notes
-
-- The final project keeps the solar system exploration concept from the original brief.
-- The shipped version uses a local JSON data source instead of the originally planned live API.
-- No external build tools or frameworks are required to run the project.
+- A finalized project concept
+- A selected public API
+- A clean starter file structure
+- A documented development plan
+- A solid base for Milestone 2 implementation
