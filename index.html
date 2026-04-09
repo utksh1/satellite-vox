@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -11,131 +11,206 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Source+Sans+3:wght@400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
   </head>
+
   <body>
-    <div class="page-shell">
-      <header class="hero">
-        <div class="hero-copy-block">
-          <figure class="hero-visual" aria-hidden="true">
-            <img src="./assets/hero-orbit.svg" alt="" />
-          </figure>
+    <div class="app-shell">
+      <aside class="app-sidebar">
+        <nav class="side-nav" aria-label="Section navigation">
+          <a href="#hero-section" class="is-current">
+            <span class="nav-point"></span>
+            <span class="nav-label">Overview</span>
+          </a>
+          <a href="#insights-section">
+            <span class="nav-point"></span>
+            <span class="nav-label">Insights</span>
+          </a>
+          <a href="#archive-section">
+            <span class="nav-point"></span>
+            <span class="nav-label">Archive</span>
+          </a>
+          <a href="#card-grid">
+            <span class="nav-point"></span>
+            <span class="nav-label">Catalog</span>
+          </a>
+        </nav>
+      </aside>
 
-          <div class="hero-layout">
-            <div>
-              <p class="eyebrow">Solar System Atlas</p>
-              <h1>SatelliteVox</h1>
+      <main class="app-main">
+        <header class="topbar">
+          <div class="topbar-branding">
+            <div class="topbar-title-block">
+              <span class="topbar-brand">SatelliteVox</span>
+            </div>
+          </div>
+
+          <div class="topbar-tools">
+            <div class="topbar-search">
+              <span class="material-symbols-outlined">search</span>
+              <input
+                id="search"
+                type="search"
+                placeholder="Search planets, moons, and asteroids"
+              />
+            </div>
+          </div>
+        </header>
+
+        <section id="hero-section" class="hero-banner">
+          <div class="hero-image" aria-hidden="true"></div>
+          <div class="hero-scrim"></div>
+          <div class="hero-glow" aria-hidden="true"></div>
+
+          <div class="hero-frame">
+            <div class="hero-content">
+              <span class="hero-chip">Prime Sector</span>
+              <h1>
+                <span>Solar system</span>
+                <span>archive with a</span>
+                <span>sharper field view.</span>
+              </h1>
               <p class="hero-copy">
-                Explore planets, moons, dwarf planets, and asteroids through a quieter,
-                cleaner catalog built for scanning, comparison, and discovery.
+                Scan planets, moons, dwarf planets, and asteroids through a
+                calmer, denser interface built for comparison instead of
+                clutter.
               </p>
+
+              <div class="hero-actions">
+                <a class="primary-cta" href="#archive-section">Open Catalog</a>
+              </div>
+            </div>
+
+            <div class="hero-aside">
+              <p class="hero-aside-label">Catalog Snapshot</p>
+              <div class="hero-aside-header">
+                <strong id="stat-total" class="hero-total">0</strong>
+                <div>
+                  <span class="hero-total-label">Tracked bodies</span>
+                  <p id="catalog-note" class="hero-note">
+                    Loading catalog details.
+                  </p>
+                </div>
+              </div>
+              <div class="hero-stats">
+                <div>
+                  <span id="stat-planets" class="stat-value">0</span>
+                  <span class="stat-label">Planets</span>
+                </div>
+                <div>
+                  <span id="stat-moons" class="stat-value">0</span>
+                  <span class="stat-label">Moons</span>
+                </div>
+                <div>
+                  <span id="stat-asteroids" class="stat-value">0</span>
+                  <span class="stat-label">Asteroids</span>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-
-        <aside class="hero-panel" aria-label="Catalog overview">
-          <p class="panel-kicker">Catalog Snapshot</p>
-          <div class="hero-stats">
-            <div>
-              <span id="stat-total" class="stat-value">0</span>
-              <span class="stat-label">Bodies</span>
-            </div>
-            <div>
-              <span id="stat-planets" class="stat-value">0</span>
-              <span class="stat-label">Planets</span>
-            </div>
-            <div>
-              <span id="stat-moons" class="stat-value">0</span>
-              <span class="stat-label">Moons</span>
-            </div>
-            <div>
-              <span id="stat-favorites" class="stat-value">0</span>
-              <span class="stat-label">Favorites</span>
-            </div>
-          </div>
-          <p id="catalog-note" class="hero-note">Loading catalog details.</p>
-        </aside>
-      </header>
-
-      <main class="workspace">
-        <aside class="controls" aria-label="Search, filter, and sort controls">
-          <div class="controls-intro">
-            <p class="panel-kicker">Explorer Controls</p>
-            <h2>Filter the catalog</h2>
-            <p>
-              Search by name, narrow by body type, and sort the collection by the
-              physical traits that matter most.
-            </p>
-          </div>
-
-          <div class="control-stack">
-            <div class="control-group">
-              <label for="search">Search</label>
-              <input id="search" type="search" placeholder="Search celestial bodies" />
-            </div>
-
-            <div class="control-group">
-              <label for="filter">Body type</label>
-              <select id="filter">
-                <option value="all">All bodies</option>
-                <option value="Planet">Planet</option>
-                <option value="Moon">Moon</option>
-                <option value="Dwarf Planet">Dwarf planet</option>
-                <option value="Asteroid">Asteroid</option>
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label for="sort">Sort by</label>
-              <select id="sort">
-                <option value="name">Name</option>
-                <option value="gravity">Gravity</option>
-                <option value="density">Density</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="theme-block">
-            <p class="panel-kicker">Display</p>
-            <button id="theme-toggle" class="theme-toggle" type="button" aria-pressed="false">
-              Switch to dark mode
-            </button>
-          </div>
-
-          <dl class="catalog-facts">
-            <div>
-              <dt>Largest body</dt>
-              <dd id="largest-body">Loading...</dd>
-            </div>
-            <div>
-              <dt>Strongest gravity</dt>
-              <dd id="strongest-gravity">Loading...</dd>
-            </div>
-            <div>
-              <dt>Catalog focus</dt>
-              <dd>Planets, major moons, dwarf planets, and key asteroids</dd>
-            </div>
-          </dl>
-        </aside>
-
-        <section class="results" aria-labelledby="results-heading">
-          <div class="results-header">
-            <div>
-              <p class="panel-kicker">Catalog Results</p>
-              <h2 id="results-heading">Celestial Bodies</h2>
-            </div>
-            <div class="results-meta">
-              <p id="results-summary" class="results-summary">Loading solar system data.</p>
-              <p id="favorites-summary" class="results-summary">0 favorites saved.</p>
-            </div>
-          </div>
-
-          <div id="status-region" class="status-region" aria-live="polite"></div>
-          <div id="card-grid" class="card-grid" aria-live="polite"></div>
         </section>
+
+        <section id="insights-section" class="feature-fullscreen">
+          <div
+            class="feature-media feature-media--atmosphere"
+            aria-hidden="true"
+          ></div>
+          <div class="feature-fullscreen-scrim"></div>
+          <div class="feature-fullscreen-content">
+            <h2 id="largest-body-name">Earth</h2>
+            <div class="feature-focal-group">
+              <h3 class="feature-subtitle" id="largest-body-radius">
+                6,371 km
+              </h3>
+              <div class="feature-meta">
+                <span class="material-symbols-outlined">public</span>
+                <span class="meta-label">Mean Radius</span>
+              </div>
+            </div>
+            <p id="largest-body-description">
+              Our home planet, the only known world to harbor life.
+            </p>
+
+            <div class="feature-stats">
+              <div class="feature-stat">
+                <span class="feature-stat-label" id="feature-stat-label-primary">Earth Gravity</span>
+                <span class="feature-stat-value" id="strongest-gravity">9.81 m/s²</span>
+              </div>
+              <div class="feature-stat">
+                <span class="feature-stat-label">Body Type</span>
+                <span class="feature-stat-value" id="feature-body-type">Planet</span>
+              </div>
+              <div class="feature-stat">
+                <span class="feature-stat-label">Average Temp</span>
+                <span class="feature-stat-value" id="feature-average-temp">288 K</span>
+              </div>
+              <div class="feature-stat">
+                <span class="feature-stat-label">Known Moons</span>
+                <span class="feature-stat-value" id="feature-moons-count">1</span>
+              </div>
+              <div class="feature-stat">
+                <span class="feature-stat-label">Planet Status</span>
+                <span class="feature-stat-value" id="feature-planet-status">Habitable</span>
+              </div>
+              <!-- New rich data slots for Earth -->
+              <div class="feature-stat feature-stat--extra" id="feature-extra-container" style="display: none;">
+                <span class="feature-stat-label" id="feature-extra-label">Biosphere</span>
+                <span class="feature-stat-value" id="feature-extra-value">8B Humans</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="content-shell">
+          <section
+            id="archive-section"
+            class="archive-section"
+            aria-labelledby="results-heading"
+          >
+            <div class="archive-header">
+              <h2 id="results-heading">Browse the catalog</h2>
+
+              <div
+                class="control-bar"
+                aria-label="Search, filter, and sort controls"
+              >
+                <div class="control-group control-group--compact">
+                  <label for="filter">Body type</label>
+                  <select id="filter">
+                    <option value="all">All bodies</option>
+                    <option value="Planet">Planet</option>
+                    <option value="Moon">Moon</option>
+                    <option value="Dwarf Planet">Dwarf planet</option>
+                    <option value="Asteroid">Asteroid</option>
+                  </select>
+                </div>
+
+                <div class="control-group control-group--compact">
+                  <label for="sort">Sort by</label>
+                  <select id="sort">
+                    <option value="name">Name</option>
+                    <option value="gravity">Gravity</option>
+                    <option value="density">Density</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div
+              id="status-region"
+              class="status-region"
+              aria-live="polite"
+            ></div>
+            <div id="card-grid" class="card-grid" aria-live="polite"></div>
+          </section>
+        </div>
       </main>
     </div>
 
