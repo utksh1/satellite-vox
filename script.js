@@ -1,4 +1,4 @@
-const DATA_URL = "https://api.npoint.io/c6741171d735a632cefc/bodies";
+const DATA_URL = "./assets/bodies.json";
 const ALLOWED_TYPES = ["Planet", "Moon", "Dwarf Planet", "Asteroid"];
 
 const query = (selector) => document.querySelector(selector);
@@ -12,27 +12,11 @@ const elements = {
   sort: query("#sort"),
   status: query("#status-region"),
   grid: query("#card-grid"),
-<<<<<<< HEAD
-=======
-  extra: query("#feature-extra-container"),
->>>>>>> 68f91684e4656a04203623c1c325c90b6ce1984f
   total: query("#stat-total"),
   planets: query("#stat-planets"),
   moons: query("#stat-moons"),
   asteroids: query("#stat-asteroids"),
   note: query("#catalog-note"),
-<<<<<<< HEAD
-=======
-  featuredName: query("#largest-body-name"),
-  featuredRadius: query("#largest-body-radius"),
-  featuredDescription: query("#largest-body-description"),
-  featuredGravityLabel: query("#feature-stat-label-primary"),
-  featuredGravity: query("#strongest-gravity"),
-  featuredType: query("#feature-body-type"),
-  featuredTemperature: query("#feature-average-temp"),
-  featuredMoons: query("#feature-moons-count"),
-  featuredStatus: query("#feature-planet-status"),
->>>>>>> 68f91684e4656a04203623c1c325c90b6ce1984f
 };
 
 const state = { bodies: [] };
@@ -74,13 +58,7 @@ async function loadBodies() {
         gravity,
         density,
         meanRadius,
-<<<<<<< HEAD
         moonsCount,
-=======
-        avgTemp,
-        moonsCount,
-        isPlanet,
->>>>>>> 68f91684e4656a04203623c1c325c90b6ce1984f
       }) => ({
         name: englishName,
         type: bodyType,
@@ -89,13 +67,7 @@ async function loadBodies() {
         gravity,
         density,
         radius: meanRadius,
-<<<<<<< HEAD
         moons: moonsCount || 0,
-=======
-        temperature: avgTemp,
-        moons: moonsCount || 0,
-        isPlanet: Boolean(isPlanet),
->>>>>>> 68f91684e4656a04203623c1c325c90b6ce1984f
       }),
     );
 }
@@ -140,7 +112,6 @@ function getVisibleBodies() {
     .filter((body) => type === "all" || body.type === type)
     .slice()
     .sort(sorters[sortBy] || sorters.name);
-<<<<<<< HEAD
 }
 
 function renderCards() {
@@ -186,79 +157,5 @@ async function init() {
   }
 }
 
-
-
-function renderCards() {
-  const visibleBodies = getVisibleBodies();
-  elements.status.innerHTML = "";
-  elements.grid.innerHTML = visibleBodies.map(createCard).join("");
-
-  if (!visibleBodies.length) {
-    showStatus("No results found", "Try a different search or body type.");
-  }
-}
-
-function renderDashboard() {
-  const summary = state.bodies.reduce(
-    (result, body) => {
-      if (body.type === "Planet") result.planets += 1;
-      if (body.type === "Moon") result.moons += 1;
-      if (body.type === "Asteroid") result.asteroids += 1;
-      if (!result.featured || (body.radius ?? 0) > (result.featured.radius ?? 0)) {
-        result.featured = body;
-      }
-      return result;
-    },
-    { planets: 0, moons: 0, asteroids: 0, featured: null },
-  );
-
-  setText(elements.total, state.bodies.length);
-  setText(elements.planets, summary.planets);
-  setText(elements.moons, summary.moons);
-  setText(elements.asteroids, summary.asteroids);
-  setText(elements.note, "4 body groups in one simple catalog view.");
-
-  if (!summary.featured) return;
-
-  setText(elements.featuredName, summary.featured.name);
-  setText(elements.featuredRadius, formatMetric(summary.featured.radius, "km"));
-  setText(elements.featuredDescription, summary.featured.summary);
-  setText(elements.featuredGravityLabel, `${summary.featured.name} Gravity`);
-  setText(elements.featuredGravity, formatMetric(summary.featured.gravity, "m/s²"));
-  setText(elements.featuredType, summary.featured.type);
-  setText(
-    elements.featuredTemperature,
-    formatMetric(summary.featured.temperature, "K"),
-  );
-  setText(elements.featuredMoons, summary.featured.moons);
-  setText(
-    elements.featuredStatus,
-    summary.featured.isPlanet ? "Major Planet" : summary.featured.type,
-  );
-
-  if (elements.extra) {
-    elements.extra.style.display = "none";
-  }
-}
-
-function bindEvents() {
-  elements.search.addEventListener("input", renderCards);
-  elements.filter.addEventListener("change", renderCards);
-  elements.sort.addEventListener("change", renderCards);
-}
-
-async function init() {
-  try {
-    showStatus("Loading data", "Fetching the catalog.");
-    state.bodies = await loadBodies();
-    renderDashboard();
-    renderCards();
-  } catch (error) {
-    elements.grid.innerHTML = "";
-    showStatus("Unable to load data", error.message, true);
-  }
-}
-
->>>>>>> 68f91684e4656a04203623c1c325c90b6ce1984f
 bindEvents();
 init();
