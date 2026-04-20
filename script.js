@@ -1,4 +1,4 @@
-const DATA_URL = "./assets/bodies.json";
+const DATA_URL = "https://api.npoint.io/c6741171d735a632cefc/bodies";
 const ALLOWED_TYPES = ["Planet", "Moon", "Dwarf Planet", "Asteroid"];
 
 const query = (selector) => document.querySelector(selector);
